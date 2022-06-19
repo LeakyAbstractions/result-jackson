@@ -1,0 +1,3 @@
+
+rootProject.name = 'result-jackson'
+include('lib-jackson')
