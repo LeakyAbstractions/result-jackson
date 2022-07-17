@@ -2,7 +2,6 @@
 package com.leakyabstractions.result.jackson;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.leakyabstractions.result.Result;
@@ -37,26 +36,6 @@ public class ResultBuilder<S, F> {
      */
     public ResultBuilder(Result<S, F> result) {
         result.ifSuccessOrElse(this::setSuccess, this::setFailure);
-    }
-
-    /**
-     * Returns this builder's success value.
-     *
-     * @return this builder's success value
-     */
-    @JsonGetter
-    public S getSuccess() {
-        return this.success;
-    }
-
-    /**
-     * Returns this builder's failure value.
-     *
-     * @return this builder's failure value
-     */
-    @JsonGetter
-    public F getFailure() {
-        return this.failure;
     }
 
     /**
