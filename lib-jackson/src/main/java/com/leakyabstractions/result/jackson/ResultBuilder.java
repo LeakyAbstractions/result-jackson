@@ -22,17 +22,17 @@ public class ResultBuilder<S, F> {
     @JsonProperty
     private F failure;
 
-    @JsonCreator
     /**
      * Creates a new instance of a result builder.
      */
+    @JsonCreator
     public ResultBuilder() {
         /* ... */
     }
 
     /**
      * Creates a new instance of a result builder based on an existing result.
-     * 
+     *
      * @param result The result to base this builder on.
      */
     public ResultBuilder(Result<S, F> result) {
@@ -41,7 +41,7 @@ public class ResultBuilder<S, F> {
 
     /**
      * Returns this builder's success value.
-     * 
+     *
      * @return this builder's success value
      */
     @JsonGetter
@@ -51,7 +51,7 @@ public class ResultBuilder<S, F> {
 
     /**
      * Returns this builder's failure value.
-     * 
+     *
      * @return this builder's failure value
      */
     @JsonGetter
@@ -61,7 +61,7 @@ public class ResultBuilder<S, F> {
 
     /**
      * Sets this builder's success value.
-     * 
+     *
      * @param success the success value
      */
     @JsonSetter
@@ -71,7 +71,7 @@ public class ResultBuilder<S, F> {
 
     /**
      * Sets this builder's failure value.
-     * 
+     *
      * @param failure the failure value
      */
     @JsonSetter
@@ -81,7 +81,7 @@ public class ResultBuilder<S, F> {
 
     /**
      * Builds a new result based on this builder.
-     * 
+     *
      * @return a new result object
      */
     public Result<S, F> build() {
