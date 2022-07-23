@@ -2,9 +2,11 @@
 package com.leakyabstractions.result.jackson;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
@@ -14,14 +16,25 @@ class ResultDeserializer extends StdDeserializer<Result<?, ?>> {
 
     private static final long serialVersionUID = 1L;
 
-    ResultDeserializer(JavaType valueType) {
+    private final JavaType builderType;
+
+    ResultDeserializer(DeserializationConfig config, JavaType valueType) {
         super(valueType);
+        this.builderType = getBuilderType(config, valueType.getBindings().getTypeParameters());
     }
 
     @Override
     public Result<?, ?> deserialize(JsonParser parser, DeserializationContext context) throws IOException {
-        return Optional.ofNullable(parser.readValueAs(ResultBuilder.class))
-                .map(x -> (Result<?, ?>) x.build())
-                .orElse(null);
+        return Optional.ofNullable(this.readBuilder(parser, context)).map(ResultBuilder::build).orElse(null);
+    }
+
+    private ResultBuilder<?, ?> readBuilder(JsonParser parser, DeserializationContext context) throws IOException {
+        if (this.builderType == null) return parser.readValueAs(ResultBuilder.class);
+        return (ResultBuilder<?, ?>) context.findRootValueDeserializer(this.builderType).deserialize(parser, context);
+    }
+
+    private static JavaType getBuilderType(DeserializationConfig config, List<JavaType> typeParams) {
+        if (typeParams.size() != 2) return null;
+        return config.getTypeFactory().constructSimpleType(ResultBuilder.class, typeParams.toArray(new JavaType[2]));
     }
 }
