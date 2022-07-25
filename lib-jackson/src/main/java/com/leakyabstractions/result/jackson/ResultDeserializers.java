@@ -14,7 +14,7 @@ class ResultDeserializers extends Deserializers.Base {
     public JsonDeserializer<?> findBeanDeserializer(JavaType type, DeserializationConfig config,
             BeanDescription description) {
         if (Result.class.isAssignableFrom(type.getRawClass())) {
-            return new ResultDeserializer(type);
+            return new ResultDeserializer(config, type);
         }
         return null;
     }
