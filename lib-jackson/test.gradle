@@ -9,4 +9,5 @@ dependencies {
 
     testImplementation libs.junit_api
     testImplementation libs.result_assertj
+    testImplementation libs.assertj
 }
