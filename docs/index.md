@@ -1,126 +1,296 @@
 ---
-title: Jackson datatype module for Result
+title: Jackson Datatype Module for Result
 description: Result-Jackson provides a Jackson datatype module for Result objects
-image: /result-banner-centered.png
+image: https://raw.githubusercontent.com/LeakyAbstractions/result/main/docs/result-banner.png
 ---
 
-# Jackson datatype module for Result
+# Result Jackson Module
 
-This library provides a Jackson datatype module for
-[Result objects](https://dev.leakyabstractions.com/result/).
+This library provides a Jackson datatype module for [results][RESULT].
 
 
-## Adding Assertions to Your Build
+## Introduction
 
-The library requires JDK 1.8 or higher. Other than that, it has no external dependencies and it is very lightweight.
-Adding it to your build should be very easy.
+When using [<tt>Result</tt> objects][RESULT_REPO] with [Jackson][JACKSON_REPO] we might run into some problems.
+[This library][RESULT_JACKSON_REPO] solves them by making Jackson treat results as if they were ordinary objects.
 
-Artifact coordinates:
+Let's start by creating a class `ApiResponse` containing one ordinary and one <tt>Result</tt> field:
 
-- Group ID: `com.leakyabstractions`
-- Artifact ID: `result-jackson`
-- Version: `{{ site.current_version }}`
+```java
+class ApiResponse {
 
-To add the dependency using [**Maven**](https://maven.apache.org/), use the following:
+  @JsonProperty
+  String version;
 
-```xml
-<dependency>
-    <groupId>com.leakyabstractions</groupId>
-    <artifactId>result-jackson</artifactId>
-    <version>{{ site.current_version }}</version>
-    <scope>test</scope>
-</dependency>
-```
+  @JsonProperty
+  Result<Integer, String> result;
 
-To add the dependency using [**Gradle**](https://gradle.org/), if you are building an application that will use
-<tt>Result</tt> internally:
-
-```gradle
-dependencies {
-    implementation 'com.leakyabstractions:result-jackson:{{ site.current_version }}'
+  // Constructors, getters and setters omitted
 }
 ```
 
-If you are building a library that will use <tt>Result</tt> type in its public API, you should use instead:
 
-```gradle
-dependencies {
-    api 'com.leakyabstractions:result-jackson:{{ site.current_version }}'
+## Problem Overview
+
+First, let's take a look at what happens when we try to serialize and deserialize <tt>ApiResponse</tt> objects with
+Jackson.
+
+To use Jackson, let's make sure we're using the latest version:
+
+- groupId: `com.fasterxml.jackson.core`
+- artifactId: `jackson-core`
+- version: `2.13.3`
+
+
+### Serialization Problem
+
+Now, let's instantiate an `ApiResponse`:
+
+```java
+ApiResponse response = new ApiResponse();
+response.setVersion("v1");
+response.setResult(success(1024));
+```
+
+And finally, let's try serializing it using an [object mapper][OBJECT_MAPPER]:
+
+```java
+ObjectMapper objectMapper = new ObjectMapper();
+String json = objectMapper.writeValueAsString(response);
+```
+
+We'll see that the output of the <tt>Result</tt> field contains both `success` and `failure` but they look like nested
+JSON objects with a boolean field `empty`:
+
+```json
+{
+  "version": "v1",
+  "result": {
+    "failure": {
+      "empty": true
+    },
+    "success": {
+      "empty": false
+    }
+  }
 }
 ```
 
-## Lazy Results
+> You may also see a `present` field along with `empty`, depending on the JDK version you are using.
 
-_Lazy_ results encapsulate expensive operations that can be entirely omitted (as an optimization). These result can be
-manipulated just like any other, but the encapsulated operation will not be executed unless there's an actual check for
-success/failure.
-
-To create a _lazy_ result we need to use static method `LazyResults.ofSupplier()`:
+Although this may look strange, it's actually what we should expect. In this case, `getSuccess()` and `getFailure()` are
+public getters on the <tt>Result</tt> class, and both of them return an optional value. Now <tt>Optional</tt> class has
+a public getter `isPresent()`, which means that, unless you have registered the
+[Jackson modules that deal with JDK 8 datatypes][JACKSON_JAVA8_REPO], it will be serialized with a value of `true` or
+`false`, depending on whether it is empty or not. This is Jackson's default serialization behavior.
 
 ```java
-    Result<String, Void> expensiveCalculation(AtomicLong timesExecuted) {
-        timesExecuted.getAndIncrement();
-        return Results.success("HELLO");
-    }
-
-    @Test
-    void should_not_execute_expensive_action() {
-        final AtomicLong timesExecuted = new AtomicLong();
-        // Given
-        final Result<String, Void> lazy = LazyResults
-                .ofSupplier(() -> this.expensiveCalculation(timesExecuted));
-        // When
-        final Result<Integer, Void> transformed = lazy.mapSuccess(String::length);
-        // Then
-        assertThat(transformed).isNotNull();
-        assertThat(timesExecuted).hasValue(0);
-    }
+@Test
+void serialization_problem() throws Exception {
+  // Given
+  ApiResponse response = new ApiResponse("v1", success(1024));
+  // When
+  ObjectMapper objectMapper = new ObjectMapper();
+  String json = objectMapper.writeValueAsString(response);
+  // Then
+  assertTrue(json.contains("v1"));
+  assertFalse(json.contains("1024"));
+}
 ```
 
-Lazy results can be manipulated just like any other result; they will try to defer the invocation of the given supplier
-as long as possible. For example, when we actually try to determine if the operation succeeded or failed.
+In fact, what we'd like to be serialized is the actual success value of the `result` field:
 
-```java
-    @Test
-    void should_execute_expensive_action() {
-        final AtomicLong timesExecuted = new AtomicLong();
-        // Given
-        final Result<String, Void> lazy = Results
-                .lazy(() -> this.expensiveCalculation(timesExecuted));
-        // When
-        final Result<Integer, Void> transformed = lazy.mapSuccess(String::length);
-        final boolean success = transformed.isSuccess();
-        // Then
-        assertThat(success).isTrue();
-        assertThat(timesExecuted).hasValue(1);
-    }
+```json
+{
+  "version": "v1",
+  "result": {
+    "failure": null,
+    "success": 1024
+  }
+}
 ```
 
 
-## Releases
+### Deserialization Problem
 
-This library adheres to [Pragmatic Versioning](https://pragver.github.io/).
+Now, let's reverse our previous example, this time trying to deserialize a JSON object into an <tt>ApiResponse</tt>:
 
-Artifacts are available in [Maven Central](https://search.maven.org/artifact/com.leakyabstractions/result-jackson).
+```java
+String json = "{\"version\":\"v2\",\"result\":{\"success\":512}}";
+ObjectMapper objectMapper = new ObjectMapper();
+objectMapper.readValue(json, ApiResponse.class);
+```
+
+We'll see that now we get an `InvalidDefinitionException`. Let's view the stack trace:
+
+```
+Cannot construct instance of `com.leakyabstractions.result.Result`
+ (no Creators, like default constructor, exist):
+ abstract types either need to be mapped to concrete types,
+ have custom deserializer, or contain additional type information
+ at [Source: (String)"{"version":"v2","result":{"success":512}}"; line: 1, column: 26]
+ (through reference chain: ApiResponse["result"])
+```
+
+This behavior again makes sense. Essentially, Jackson doesn't have a clue how to create new <tt>Result</tt> objects,
+because <tt>Result</tt> is just an interface, not a concrete type.
+
+```java
+@Test
+void deserialization_problem() {
+  // Given
+  String json = "{\"version\":\"v2\",\"result\":{\"success\":512}}";
+  // Then
+  ObjectMapper objectMapper = new ObjectMapper();
+  InvalidDefinitionException error = assertThrows(InvalidDefinitionException.class,
+      () -> objectMapper.readValue(json, ApiResponse.class));
+  assertTrue(error.getMessage().startsWith(
+      "Cannot construct instance of `com.leakyabstractions.result.Result`"));
+}
+```
 
 
-## Javadoc
+## Solution
 
-Here's the full
-[Result API documentation](https://dev.leakyabstractions.com/result-jackson/javadoc/{{ site.current_version }}/).
+What we want, is for Jackson to treat <tt>Result</tt> values as JSON objects that contain either a `success` or a
+`failure` value. Fortunately, this problem has been solved for us. [This library][RESULT_JACKSON_REPO] provides a
+Jackson module that deals with <tt>Result</tt> objects.
+
+First, let's add the latest version as a Maven dependency:
+
+- groupId: `com.leakyabstractions`
+- artifactId: `result-jackson`
+- version: `{{ site.current_version }}`
+
+All we need to do now is register <tt>ResultModule</tt> with our object mapper:
+
+```java
+ObjectMapper objectMapper = new ObjectMapper();
+objectMapper.registerModule(new ResultModule());
+```
+
+Alternatively, you can also auto-discover the module with:
+
+```java
+objectMapper.findAndRegisterModules();
+```
+
+Regardless of registration mechanism, after registration all functionality is available for all normal Jackson
+operations.
 
 
-## Looking for Support?
+### Serialization Solution
 
-We'd love to help. Check out the [support guidelines](SUPPORT.md).
+Now, let's try and serialize our `ApiResponse` object again:
+
+```java
+@Test
+void serialization_solution_successful_result() throws Exception {
+  // Given
+  ApiResponse response = new ApiResponse("v3", success(256));
+  // When
+  ObjectMapper objectMapper = new ObjectMapper();
+  objectMapper.registerModule(new ResultModule());
+  String json = objectMapper.writeValueAsString(response);
+  // Then
+  assertTrue(json.contains("v3"));
+  assertTrue(json.contains("256"));
+}
+```
+
+If we look at the serialized response, we'll see that this time the `result` field contains a null `failure` value and
+a non-null `success` value:
+
+```json
+{
+  "version": "v3",
+  "result": {
+    "failure": null,
+    "success": 256
+  }
+}
+```
+
+Next, we can try serializing a failed result:
+
+```java
+@Test
+void serialization_solution_failed_result() throws Exception {
+  // Given
+  ApiResponse response = new ApiResponse("v4", failure("Hello"));
+  // When
+  ObjectMapper objectMapper = new ObjectMapper();
+  objectMapper.findAndRegisterModules();
+  String json = objectMapper.writeValueAsString(response);
+  // Then
+  assertTrue(json.contains("v4"));
+  assertTrue(json.contains("Hello"));
+}
+```
+
+And we can verify that the serialized response contains a non-null `failure` value and a null `success` value:
+
+```json
+{
+  "version": "v4",
+  "result": {
+    "failure": "Hello",
+    "success": null
+  }
+}
+```
 
 
-## Contributions Welcome
+### Deserialization Solution
 
-If you'd like to contribute to this project, please [start here](CONTRIBUTING.md).
+Now, let's repeat our tests for deserialization. If we reread our `ApiResponse` we'll see that we no longer get an
+`InvalidDefinitionException`:
+
+```java
+@Test
+void deserialization_solution_successful_result() throws Exception {
+  // Given
+  String json = "{\"version\":\"v5\",\"result\":{\"success\":128}}";
+  // When
+  ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
+  ApiResponse response = objectMapper.readValue(json, ApiResponse.class);
+  // Then
+  assertEquals("v5", response.getVersion());
+  assertEquals(128, response.getResult().orElse(null));
+}
+```
+
+Finally, let's repeat the test again, this time with a failed result. We'll see that yet again we don't get an
+exception, and in fact, have a failed <tt>Result</tt>:
+
+```java
+@Test
+void deserialization_solution_failed_result() throws Exception {
+  // Given
+  String json = "{\"version\":\"v6\",\"result\":{\"failure\":\"Bye\"}}";
+  // When
+  ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
+  ApiResponse response = objectMapper.readValue(json, ApiResponse.class);
+  // Then
+  assertEquals("v6", response.getVersion());
+  assertEquals("Bye", response.getResult().getFailure().orElse(null));
+}
+```
 
 
-## Code of Conduct
+## Conclusion
 
-This project is governed by the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are
-expected to uphold this code.
+We've shown how to use <tt>Result</tt> with Jackson without any problems by leveraging the
+[Jackson datatype module for Result][RESULT_JACKSON_REPO], demonstrating how it enables Jackson to treat instances of
+<tt>Result</tt> objects as an ordinary fields.
+
+The implementation of these examples can be found [here][EXAMPLE].
+
+
+[RESULT]: https://dev.leakyabstractions.com/result/
+[RESULT_REPO]: https://github.com/LeakyAbstractions/result/
+[RESULT_JACKSON_REPO]: https://github.com/LeakyAbstractions/result-jackson/
+[EXAMPLE]: https://github.com/LeakyAbstractions/result-jackson/blob/main/lib-jackson/src/test/java/com/leakyabstractions/result/jackson/Example_Test.java
+[JACKSON_REPO]: https://github.com/FasterXML/jackson
+[JACKSON_JAVA8_REPO]: https://github.com/FasterXML/jackson-modules-java8
+[OBJECT_MAPPER]: https://www.baeldung.com/jackson-object-mapper-tutorial
