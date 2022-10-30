@@ -14,7 +14,7 @@ public class ResultModule extends SimpleModule {
     public final static String GROUP_ID = "com.leakyabstractions";
     public final static String ARTIFACT_ID = "result-jackson";
 
-    public final static int[] VERSION_NUMBERS = { 0, 1, 0, 0 };
+    private final static int[] VERSION_NUMBERS = { 0, 1, 0, 0 };
     public final static String VERSION_SNAPSHOT = null;
 
     public final static int VERSION_GRADE = VERSION_NUMBERS[0];
