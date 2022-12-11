@@ -25,7 +25,7 @@ import com.leakyabstractions.result.Results;
 @DisplayName("ResultModule")
 class ResultModule_Test {
 
-    final static TypeReference<Result<String, Integer>> RESULT_TYPE = new TypeReference<Result<String, Integer>>() {
+    static final TypeReference<Result<String, Integer>> RESULT_TYPE = new TypeReference<Result<String, Integer>>() {
     };
 
     static class Foobar<T> {
@@ -63,10 +63,12 @@ class ResultModule_Test {
         // When
         final Result<?, ?> result = mapper.readValue(json, Result.class);
         // Then
-        assertThat(result).hasSuccessSatisfying(x -> {
-            assertThat(x).hasFieldOrPropertyWithValue("x", "SUCCESS");
-            assertThat(x).hasFieldOrPropertyWithValue("y", 123);
-        });
+        assertThat(result)
+                .hasSuccessSatisfying(
+                        x -> {
+                            assertThat(x).hasFieldOrPropertyWithValue("x", "SUCCESS");
+                            assertThat(x).hasFieldOrPropertyWithValue("y", 123);
+                        });
     }
 
     @Test
@@ -145,10 +147,12 @@ class ResultModule_Test {
         // When
         final Result<Foobar<List<Integer>>, ?> result = mapper.readValue(json, RESULT_TYPE);
         // Then
-        assertThat(result).hasSuccessSatisfying(x -> {
-            assertThat(x.foo).containsExactly(1, 2, 3);
-            assertThat(x.bar).isTrue();
-        });
+        assertThat(result)
+                .hasSuccessSatisfying(
+                        x -> {
+                            assertThat(x.foo).containsExactly(1, 2, 3);
+                            assertThat(x.bar).isTrue();
+                        });
     }
 
     @Test
@@ -161,10 +165,12 @@ class ResultModule_Test {
         // When
         final Result<Integer, Foobar<Long>> result = mapper.readValue(json, RESULT_TYPE);
         // Then
-        assertThat(result).hasFailureSatisfying(x -> {
-            assertThat(x.foo).isEqualTo(404L);
-            assertThat(x.bar).isNull();
-        });
+        assertThat(result)
+                .hasFailureSatisfying(
+                        x -> {
+                            assertThat(x.foo).isEqualTo(404L);
+                            assertThat(x.bar).isNull();
+                        });
     }
 
     @Test

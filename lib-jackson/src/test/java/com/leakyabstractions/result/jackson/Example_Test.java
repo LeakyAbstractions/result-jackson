@@ -78,10 +78,13 @@ class Example_Test {
         String json = "{\"version\":\"v2\",\"result\":{\"success\":512}}";
         // Then
         ObjectMapper objectMapper = new ObjectMapper();
-        InvalidDefinitionException error = assertThrows(InvalidDefinitionException.class,
+        InvalidDefinitionException error = assertThrows(
+                InvalidDefinitionException.class,
                 () -> objectMapper.readValue(json, ApiResponse.class));
-        assertTrue(error.getMessage().startsWith(
-                "Cannot construct instance of `com.leakyabstractions.result.Result`"));
+        assertTrue(
+                error
+                        .getMessage()
+                        .startsWith("Cannot construct instance of `com.leakyabstractions.result.Result`"));
     }
 
     @Test
