@@ -21,9 +21,7 @@ public class ResultBuilder<S, F> {
     @JsonProperty
     private F failure;
 
-    /**
-     * Creates a new instance of a result builder.
-     */
+    /** Creates a new instance of a result builder. */
     @JsonCreator
     public ResultBuilder() {
         /* ... */

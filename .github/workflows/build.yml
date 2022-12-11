@@ -19,15 +19,25 @@ jobs:
 
     strategy:
       matrix:
-        jdk: [ 8, 11, 17 ]
+        jdk: [ 8, 11, 17, 19 ]
 
     steps:
 
     # ================================
+    # SHALLOW CLONE
+    # ================================
+    - name: Shallow clone
+      if: ${{ matrix.jdk != 17 }}
+      uses: actions/checkout@v3
+
+    # ================================
     # CHECKOUT
     # ================================
-    - uses: actions/checkout@v3
+    - name: Checkout git branch
+      if: ${{ matrix.jdk == 17 }}
+      uses: actions/checkout@v3
       with:
+        # Fetch all history for all tags and branches (recommended by SonarQube)
         fetch-depth: 0
 
     # ================================
@@ -61,24 +71,20 @@ jobs:
         cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/develop' }}
 
     # ================================
-    # GOOGLE JAVA FORMAT WORKAROUND
-    # ================================
-    - name: Set Gradle properties on JDK16+
-      if: ${{ matrix.jdk >= 16 }}
-      shell: bash
-      run: cat google-java-format.properties >> gradle.properties
-
-    # ================================
     # BUILD
     # ================================
     - name: Build
-      run: ./gradlew build -x check --info --scan
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: build -x check --info --scan
 
     # ================================
     # CHECK
     # ================================
     - name: Check
-      run: ./gradlew check --info --scan
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: check --info --scan
 
     # ================================
     # ANALYZE
@@ -90,4 +96,6 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: https://sonarcloud.io
         SONAR_ORGANIZATION: leakyabstractions
-      run: ./gradlew sonarqube --info --scan
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: sonarqube --info --scan

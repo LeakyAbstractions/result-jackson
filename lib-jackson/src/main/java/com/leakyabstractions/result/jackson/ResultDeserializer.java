@@ -24,17 +24,23 @@ class ResultDeserializer extends StdDeserializer<Result<?, ?>> {
     }
 
     @Override
-    public Result<?, ?> deserialize(JsonParser parser, DeserializationContext context) throws IOException {
-        return Optional.ofNullable(this.readBuilder(parser, context)).map(ResultBuilder::build).orElse(null);
+    public Result<?, ?> deserialize(JsonParser parser, DeserializationContext context)
+            throws IOException {
+        return Optional.ofNullable(this.readBuilder(parser, context))
+                .map(ResultBuilder::build)
+                .orElse(null);
     }
 
-    private ResultBuilder<?, ?> readBuilder(JsonParser parser, DeserializationContext context) throws IOException {
+    private ResultBuilder<?, ?> readBuilder(JsonParser parser, DeserializationContext context)
+            throws IOException {
         if (this.builderType == null) return parser.readValueAs(ResultBuilder.class);
         return (ResultBuilder<?, ?>) context.findRootValueDeserializer(this.builderType).deserialize(parser, context);
     }
 
     private static JavaType getBuilderType(DeserializationConfig config, List<JavaType> typeParams) {
         if (typeParams.size() != 2) return null;
-        return config.getTypeFactory().constructSimpleType(ResultBuilder.class, typeParams.toArray(new JavaType[2]));
+        return config
+                .getTypeFactory()
+                .constructSimpleType(ResultBuilder.class, typeParams.toArray(new JavaType[2]));
     }
 }
