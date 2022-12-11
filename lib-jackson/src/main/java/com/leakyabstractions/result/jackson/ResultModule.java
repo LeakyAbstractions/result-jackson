@@ -20,7 +20,7 @@ public class ResultModule extends SimpleModule {
     private static final int VERSION_MINOR = VERSION_NUMBERS[2];
     private static final int VERSION_PATCH = VERSION_NUMBERS[3];
 
-    public static final Version VERSION = new Version(
+    public static final Version MODULE_VERSION = new Version(
             VERSION_GRADE * 1000 + VERSION_MAJOR,
             VERSION_MINOR,
             VERSION_PATCH,
@@ -30,7 +30,7 @@ public class ResultModule extends SimpleModule {
 
     /** Create a new instance of result jackson module. */
     public ResultModule() {
-        super(VERSION);
+        super(MODULE_VERSION);
     }
 
     @Override
