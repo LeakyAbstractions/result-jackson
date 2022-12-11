@@ -9,16 +9,16 @@ public class ResultModule extends SimpleModule {
 
     private static final long serialVersionUID = 1L;
 
-    public static final String GROUP_ID = "com.leakyabstractions";
-    public static final String ARTIFACT_ID = "result-jackson";
+    private static final String GROUP_ID = "com.leakyabstractions";
+    private static final String ARTIFACT_ID = "result-jackson";
 
     private static final int[] VERSION_NUMBERS = { 0, 1, 0, 0 };
-    public static final String VERSION_SNAPSHOT = null;
+    private static final String VERSION_SNAPSHOT = null;
 
-    public static final int VERSION_GRADE = VERSION_NUMBERS[0];
-    public static final int VERSION_MAJOR = VERSION_NUMBERS[1];
-    public static final int VERSION_MINOR = VERSION_NUMBERS[2];
-    public static final int VERSION_PATCH = VERSION_NUMBERS[3];
+    private static final int VERSION_GRADE = VERSION_NUMBERS[0];
+    private static final int VERSION_MAJOR = VERSION_NUMBERS[1];
+    private static final int VERSION_MINOR = VERSION_NUMBERS[2];
+    private static final int VERSION_PATCH = VERSION_NUMBERS[3];
 
     public static final Version VERSION = new Version(
             VERSION_GRADE * 1000 + VERSION_MAJOR,
