@@ -1,12 +1,12 @@
 ---
 title: Jackson Datatype Module for Result
 description: Result-Jackson provides a Jackson datatype module for Result objects
-image: https://raw.githubusercontent.com/LeakyAbstractions/result/main/docs/result-banner.png
+image: https://dev.leakyabstractions.com/result/result-magic-ball.png
 ---
 
 # Result Jackson Module
 
-This library provides a Jackson datatype module for [results][RESULT].
+This library provides a Jackson datatype module for [Results objects][RESULT].
 
 
 ## Introduction
@@ -32,14 +32,10 @@ class ApiResponse {
 
 ## Problem Overview
 
-First, let's take a look at what happens when we try to serialize and deserialize <tt>ApiResponse</tt> objects with
-Jackson.
+We will take a look at what happens when we try to serialize and deserialize <tt>ApiResponse</tt> objects with Jackson.
 
-To use Jackson, let's make sure we're using the latest version:
-
-- groupId: `com.fasterxml.jackson.core`
-- artifactId: `jackson-core`
-- version: `2.13.3`
+First, let's make sure we're using the latest versions of both libraries, [Jackson][JACKSON_LATEST] and
+[Result][RESULT_LATEST].
 
 
 ### Serialization Problem
@@ -280,17 +276,19 @@ void deserialization_solution_failed_result() throws Exception {
 
 ## Conclusion
 
-We've shown how to use <tt>Result</tt> with Jackson without any problems by leveraging the
-[Jackson datatype module for Result][RESULT_JACKSON_REPO], demonstrating how it enables Jackson to treat instances of
-<tt>Result</tt> objects as an ordinary fields.
+We've shown how to use [Result][RESULT] with [Jackson][JACKSON] without any problems by leveraging the
+[Jackson datatype module for Result][RESULT_JACKSON_REPO], demonstrating how it enables Jackson to treat
+<tt>Result</tt> objects as ordinary fields.
 
-The implementation of these examples can be found [here][EXAMPLE].
+The implementation of these examples can be found [here][RESULT_JACKSON_EXAMPLE].
 
 
-[RESULT]: https://dev.leakyabstractions.com/result/
-[RESULT_REPO]: https://github.com/LeakyAbstractions/result/
-[RESULT_JACKSON_REPO]: https://github.com/LeakyAbstractions/result-jackson/
-[EXAMPLE]: https://github.com/LeakyAbstractions/result-jackson/blob/main/lib-jackson/src/test/java/com/leakyabstractions/result/jackson/Example_Test.java
-[JACKSON_REPO]: https://github.com/FasterXML/jackson
-[JACKSON_JAVA8_REPO]: https://github.com/FasterXML/jackson-modules-java8
-[OBJECT_MAPPER]: https://www.baeldung.com/jackson-object-mapper-tutorial
+[JACKSON_JAVA8_REPO]:           https://github.com/FasterXML/jackson-modules-java8
+[JACKSON_LATEST]:               https://search.maven.org/artifact/com.fasterxml.jackson.core/jackson-core/
+[JACKSON_REPO]:                 https://github.com/FasterXML/jackson
+[OBJECT_MAPPER]:                https://www.baeldung.com/jackson-object-mapper-tutorial
+[RESULT]:                       https://dev.leakyabstractions.com/result/
+[RESULT_JACKSON_EXAMPLE]:       https://github.com/LeakyAbstractions/result-jackson/blob/main/lib-jackson/src/test/java/com/leakyabstractions/result/jackson/Example_Test.java
+[RESULT_JACKSON_REPO]:          https://github.com/LeakyAbstractions/result-jackson/
+[RESULT_LATEST]:                https://search.maven.org/artifact/com.leakyabstractions/result/
+[RESULT_REPO]:                  https://github.com/LeakyAbstractions/result/
