@@ -1,8 +1,8 @@
 
 package com.leakyabstractions.result.jackson;
 
-import static com.leakyabstractions.result.Results.failure;
-import static com.leakyabstractions.result.Results.success;
+import static com.leakyabstractions.result.core.Results.failure;
+import static com.leakyabstractions.result.core.Results.success;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
-import com.leakyabstractions.result.Result;
+import com.leakyabstractions.result.api.Result;
 
 /**
  * Implementation of the example described in the
@@ -84,7 +84,7 @@ class Example_Test {
         assertTrue(
                 error
                         .getMessage()
-                        .startsWith("Cannot construct instance of `com.leakyabstractions.result.Result`"));
+                        .startsWith("Cannot construct instance of `com.leakyabstractions.result.api.Result`"));
     }
 
     @Test

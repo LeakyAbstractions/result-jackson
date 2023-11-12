@@ -19,8 +19,8 @@ package com.leakyabstractions.result.jackson;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.leakyabstractions.result.Result;
-import com.leakyabstractions.result.Results;
+import com.leakyabstractions.result.api.Result;
+import com.leakyabstractions.result.core.Results;
 
 /**
  * Builds {@link Result} objects.

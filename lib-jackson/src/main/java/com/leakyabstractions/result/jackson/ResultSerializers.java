@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.ser.Serializers;
-import com.leakyabstractions.result.Result;
+import com.leakyabstractions.result.api.Result;
 
 class ResultSerializers extends Serializers.Base {
 

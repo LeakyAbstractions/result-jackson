@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.leakyabstractions.result.Result;
+import com.leakyabstractions.result.api.Result;
 
 class ResultDeserializer extends StdDeserializer<Result<?, ?>> {
 
