@@ -276,7 +276,7 @@ void deserialization_solution_failed_result() throws Exception {
 
 ## Conclusion
 
-We've shown how to use [Result][RESULT] with [Jackson][JACKSON] without any problems by leveraging the
+We've shown how to use [Result][RESULT] with [Jackson][JACKSON_REPO] without any problems by leveraging the
 [Jackson datatype module for Result][RESULT_JACKSON_REPO], demonstrating how it enables Jackson to treat
 <tt>Result</tt> objects as ordinary fields.
 
