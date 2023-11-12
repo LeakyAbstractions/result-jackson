@@ -120,7 +120,7 @@ objectMapper.readValue(json, ApiResponse.class);
 We'll see that now we get an `InvalidDefinitionException`. Let's view the stack trace:
 
 ```
-Cannot construct instance of `com.leakyabstractions.result.Result`
+Cannot construct instance of `com.leakyabstractions.result.api.Result`
  (no Creators, like default constructor, exist):
  abstract types either need to be mapped to concrete types,
  have custom deserializer, or contain additional type information
@@ -141,7 +141,7 @@ void deserialization_problem() {
   InvalidDefinitionException error = assertThrows(InvalidDefinitionException.class,
       () -> objectMapper.readValue(json, ApiResponse.class));
   assertTrue(error.getMessage().startsWith(
-      "Cannot construct instance of `com.leakyabstractions.result.Result`"));
+      "Cannot construct instance of `com.leakyabstractions.result.api.Result`"));
 }
 ```
 
@@ -276,7 +276,7 @@ void deserialization_solution_failed_result() throws Exception {
 
 ## Conclusion
 
-We've shown how to use [Result][RESULT] with [Jackson][JACKSON] without any problems by leveraging the
+We've shown how to use [Result][RESULT] with [Jackson][JACKSON_REPO] without any problems by leveraging the
 [Jackson datatype module for Result][RESULT_JACKSON_REPO], demonstrating how it enables Jackson to treat
 <tt>Result</tt> objects as ordinary fields.
 
