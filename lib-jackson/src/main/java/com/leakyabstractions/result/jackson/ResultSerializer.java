@@ -22,7 +22,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.leakyabstractions.result.Result;
+import com.leakyabstractions.result.api.Result;
 
 class ResultSerializer extends StdSerializer<Result<?, ?>> {
 
