@@ -28,14 +28,13 @@ jobs:
       with:
         distribution: 'zulu'
         java-package: jdk
-        java-version: 8
+        java-version: 21
 
     # ================================
     # CREATE RELEASE
     # ================================
     - name: Create Release
       uses: softprops/action-gh-release@v1
-
 
     # ================================
     # PUBLISH
