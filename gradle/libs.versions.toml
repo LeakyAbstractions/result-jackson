@@ -1,10 +1,10 @@
 [versions]
 assertj = "3.24.2"
-google-java-format = "1.17.0"
+google-java-format = "1.18.1"
 jackson = "2.16.0"
 jacoco = "0.8.10"
 junit = "5.10.1"
-nexus-publish = "1.1.0"
+nexus-publish = "2.0.0-rc-1"
 result-assertj = "0.9.0.0"
 result-core = "0.15.0.0"
 sonarqube = "4.4.1.3373"
