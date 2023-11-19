@@ -17,16 +17,7 @@ When using [<tt>Result</tt> objects][RESULT_REPO] with [Jackson][JACKSON_REPO] w
 Let's start by creating a class `ApiResponse` containing one ordinary and one <tt>Result</tt> field:
 
 ```java
-class ApiResponse {
-
-  @JsonProperty
-  String version;
-
-  @JsonProperty
-  Result<Integer, String> result;
-
-  // Constructors, getters and setters omitted
-}
+{% include_relative lib-jackson/src/test/java/example/ApiResponse.java %}
 ```
 
 
@@ -40,36 +31,23 @@ First, let's make sure we're using the latest versions of both libraries, [Jacks
 
 ### Serialization Problem
 
-Now, let's instantiate an `ApiResponse`:
+Now, let's instantiate an `ApiResponse` object:
 
 ```java
-ApiResponse response = new ApiResponse();
-response.setVersion("v1");
-response.setResult(success(1024));
+{% include_relative lib-jackson/src/test/java/example/Fragments.java fragment="instantiate" %}
 ```
 
 And finally, let's try serializing it using an [object mapper][OBJECT_MAPPER]:
 
 ```java
-ObjectMapper objectMapper = new ObjectMapper();
-String json = objectMapper.writeValueAsString(response);
+{% include_relative lib-jackson/src/test/java/example/Fragments.java fragment="serialize" %}
 ```
 
 We'll see that the output of the <tt>Result</tt> field contains both `success` and `failure` but they look like nested
 JSON objects with a boolean field `empty`:
 
 ```json
-{
-  "version": "v1",
-  "result": {
-    "failure": {
-      "empty": true
-    },
-    "success": {
-      "empty": false
-    }
-  }
-}
+{% include_relative lib-jackson/src/test/resources/serialization_error.json %}
 ```
 
 > You may also see a `present` field along with `empty`, depending on the JDK version you are using.
@@ -81,29 +59,13 @@ a public getter `isPresent()`, which means that, unless you have registered the
 `false`, depending on whether it is empty or not. This is Jackson's default serialization behavior.
 
 ```java
-@Test
-void serialization_problem() throws Exception {
-  // Given
-  ApiResponse response = new ApiResponse("v1", success(1024));
-  // When
-  ObjectMapper objectMapper = new ObjectMapper();
-  String json = objectMapper.writeValueAsString(response);
-  // Then
-  assertTrue(json.contains("v1"));
-  assertFalse(json.contains("1024"));
-}
+{% include_relative lib-jackson/src/test/java/example/Example_Test.java test="serialization_problem" %}
 ```
 
 In fact, what we'd like to be serialized is the actual success value of the `result` field:
 
 ```json
-{
-  "version": "v1",
-  "result": {
-    "failure": null,
-    "success": 1024
-  }
-}
+{% include_relative lib-jackson/src/test/resources/expected_serialized_result.json %}
 ```
 
 
@@ -112,37 +74,20 @@ In fact, what we'd like to be serialized is the actual success value of the `res
 Now, let's reverse our previous example, this time trying to deserialize a JSON object into an <tt>ApiResponse</tt>:
 
 ```java
-String json = "{\"version\":\"v2\",\"result\":{\"success\":512}}";
-ObjectMapper objectMapper = new ObjectMapper();
-objectMapper.readValue(json, ApiResponse.class);
+{% include_relative lib-jackson/src/test/java/example/Fragments.java fragment="deserialize" %}
 ```
 
 We'll see that now we get an `InvalidDefinitionException`. Let's view the stack trace:
 
 ```
-Cannot construct instance of `com.leakyabstractions.result.api.Result`
- (no Creators, like default constructor, exist):
- abstract types either need to be mapped to concrete types,
- have custom deserializer, or contain additional type information
- at [Source: (String)"{"version":"v2","result":{"success":512}}"; line: 1, column: 26]
- (through reference chain: ApiResponse["result"])
+{% include_relative lib-jackson/src/test/resources/deserialization_error.txt %}
 ```
 
 This behavior again makes sense. Essentially, Jackson doesn't have a clue how to create new <tt>Result</tt> objects,
 because <tt>Result</tt> is just an interface, not a concrete type.
 
 ```java
-@Test
-void deserialization_problem() {
-  // Given
-  String json = "{\"version\":\"v2\",\"result\":{\"success\":512}}";
-  // Then
-  ObjectMapper objectMapper = new ObjectMapper();
-  InvalidDefinitionException error = assertThrows(InvalidDefinitionException.class,
-      () -> objectMapper.readValue(json, ApiResponse.class));
-  assertTrue(error.getMessage().startsWith(
-      "Cannot construct instance of `com.leakyabstractions.result.api.Result`"));
-}
+{% include_relative lib-jackson/src/test/java/example/Example_Test.java test="deserialization_problem" %}
 ```
 
 
@@ -161,14 +106,13 @@ First, let's add the latest version as a Maven dependency:
 All we need to do now is register <tt>ResultModule</tt> with our object mapper:
 
 ```java
-ObjectMapper objectMapper = new ObjectMapper();
-objectMapper.registerModule(new ResultModule());
+{% include_relative lib-jackson/src/test/java/example/Fragments.java fragment="register_manually" %}
 ```
 
 Alternatively, you can also auto-discover the module with:
 
 ```java
-objectMapper.findAndRegisterModules();
+{% include_relative lib-jackson/src/test/java/example/Fragments.java fragment="register_automatically" %}
 ```
 
 Regardless of registration mechanism, after registration all functionality is available for all normal Jackson
@@ -180,60 +124,26 @@ operations.
 Now, let's try and serialize our `ApiResponse` object again:
 
 ```java
-@Test
-void serialization_solution_successful_result() throws Exception {
-  // Given
-  ApiResponse response = new ApiResponse("v3", success(256));
-  // When
-  ObjectMapper objectMapper = new ObjectMapper();
-  objectMapper.registerModule(new ResultModule());
-  String json = objectMapper.writeValueAsString(response);
-  // Then
-  assertTrue(json.contains("v3"));
-  assertTrue(json.contains("256"));
-}
+{% include_relative lib-jackson/src/test/java/example/Example_Test.java test="serialization_solution_successful_result" %}
 ```
 
 If we look at the serialized response, we'll see that this time the `result` field contains a null `failure` value and
 a non-null `success` value:
 
 ```json
-{
-  "version": "v3",
-  "result": {
-    "failure": null,
-    "success": 256
-  }
-}
+{% include_relative lib-jackson/src/test/resources/serialization_solution_successful_result.json %}
 ```
 
 Next, we can try serializing a failed result:
 
 ```java
-@Test
-void serialization_solution_failed_result() throws Exception {
-  // Given
-  ApiResponse response = new ApiResponse("v4", failure("Hello"));
-  // When
-  ObjectMapper objectMapper = new ObjectMapper();
-  objectMapper.findAndRegisterModules();
-  String json = objectMapper.writeValueAsString(response);
-  // Then
-  assertTrue(json.contains("v4"));
-  assertTrue(json.contains("Hello"));
-}
+{% include_relative lib-jackson/src/test/java/example/Example_Test.java test="serialization_solution_failed_result" %}
 ```
 
 And we can verify that the serialized response contains a non-null `failure` value and a null `success` value:
 
 ```json
-{
-  "version": "v4",
-  "result": {
-    "failure": "Hello",
-    "success": null
-  }
-}
+{% include_relative lib-jackson/src/test/resources/serialization_solution_failed_result.json %}
 ```
 
 
@@ -243,34 +153,14 @@ Now, let's repeat our tests for deserialization. If we reread our `ApiResponse` 
 `InvalidDefinitionException`:
 
 ```java
-@Test
-void deserialization_solution_successful_result() throws Exception {
-  // Given
-  String json = "{\"version\":\"v5\",\"result\":{\"success\":128}}";
-  // When
-  ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
-  ApiResponse response = objectMapper.readValue(json, ApiResponse.class);
-  // Then
-  assertEquals("v5", response.getVersion());
-  assertEquals(128, response.getResult().orElse(null));
-}
+{% include_relative lib-jackson/src/test/java/example/Example_Test.java test="deserialization_solution_successful_result" %}
 ```
 
 Finally, let's repeat the test again, this time with a failed result. We'll see that yet again we don't get an
 exception, and in fact, have a failed <tt>Result</tt>:
 
 ```java
-@Test
-void deserialization_solution_failed_result() throws Exception {
-  // Given
-  String json = "{\"version\":\"v6\",\"result\":{\"failure\":\"Bye\"}}";
-  // When
-  ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
-  ApiResponse response = objectMapper.readValue(json, ApiResponse.class);
-  // Then
-  assertEquals("v6", response.getVersion());
-  assertEquals("Bye", response.getResult().getFailure().orElse(null));
-}
+{% include_relative lib-jackson/src/test/java/example/Example_Test.java test="deserialization_solution_failed_result" %}
 ```
 
 
@@ -288,7 +178,7 @@ The implementation of these examples can be found [here][RESULT_JACKSON_EXAMPLE]
 [JACKSON_REPO]:                 https://github.com/FasterXML/jackson
 [OBJECT_MAPPER]:                https://www.baeldung.com/jackson-object-mapper-tutorial
 [RESULT]:                       https://dev.leakyabstractions.com/result/
-[RESULT_JACKSON_EXAMPLE]:       https://github.com/LeakyAbstractions/result-jackson/blob/main/lib-jackson/src/test/java/com/leakyabstractions/result/jackson/Example_Test.java
+[RESULT_JACKSON_EXAMPLE]:       https://github.com/LeakyAbstractions/result-jackson/blob/main/lib-jackson/src/test/java/example/Example_Test.java
 [RESULT_JACKSON_REPO]:          https://github.com/LeakyAbstractions/result-jackson/
 [RESULT_LATEST]:                https://search.maven.org/artifact/com.leakyabstractions/result/
 [RESULT_REPO]:                  https://github.com/LeakyAbstractions/result/

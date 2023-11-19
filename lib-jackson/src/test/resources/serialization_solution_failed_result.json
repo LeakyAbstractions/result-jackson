@@ -1,0 +1,7 @@
+{
+  "version": "v4",
+  "result": {
+    "failure": "Hello",
+    "success": null
+  }
+}
