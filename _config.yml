@@ -1,0 +1,9 @@
+theme: jekyll-theme-leap-day
+title: Lazy Results
+description: Jackson datatype module for Result
+current_version: 0.7.0.0
+show_downloads: true
+logo: https://dev.leakyabstractions.com/result/result-banner.png
+exclude:
+  - gradle
+  - lib-jackson

@@ -100,7 +100,7 @@ See the License for the specific language governing permissions and limitations 
 [GUILLERMO]:                    https://guillermo.dev/
 [GUILLERMO_IMAGE]:              https://guillermo.dev/assets/images/thumb.png
 [JACKSON]:                      https://github.com/FasterXML/jackson/
-[JAVADOC]:                      https://dev.leakyabstractions.com/result-jackson/javadoc/
+[JAVADOC]:                      https://javadoc.io/doc/com.leakyabstractions/result-jackson/
 [LATEST_RELEASE]:               https://github.com/leakyabstractions/result-jackson/releases/latest/
 [PRAGVER]:                      https://pragver.github.io/
 [QUALITY_GATE]:                 https://sonarcloud.io/dashboard?id=LeakyAbstractions_result-jackson
