@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.BufferedReader;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
@@ -28,13 +27,29 @@ class Example_Test {
 void serialization_problem() throws Exception {
   // Given
   ApiResponse response = new ApiResponse("v1", success(1024));
-  // When
-  ObjectMapper objectMapper = new ObjectMapper();
-  String json = objectMapper.writeValueAsString(response);
   // Then
-  assertTrue(json.contains("v1"));
-  assertFalse(json.contains("1024"));
+  ObjectMapper objectMapper = new ObjectMapper();
+  InvalidDefinitionException error = assertThrows(InvalidDefinitionException.class,
+      () -> objectMapper.writeValueAsString(response));
+  assertTrue(error.getMessage().startsWith(
+      "Java 8 optional type `java.util.Optional<java.lang.Integer>` not supported"));
 } // End{% endif %}{% if false %}
+
+@Test
+void serialization_error_message() throws Exception {
+  // Given
+  ApiResponse response = new ApiResponse("v1", success(1024));
+  String expected;
+  try (BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream(
+      "serialization_error.txt")))) {
+    expected = br.lines().collect(Collectors.joining());
+  }
+  // Then
+  ObjectMapper objectMapper = new ObjectMapper();
+  InvalidDefinitionException error = assertThrows(InvalidDefinitionException.class,
+      () -> objectMapper.writeValueAsString(response));
+  assertTrue(error.getMessage().replaceAll("\\n", "").startsWith(expected));
+}
 
 /** {% elsif include.test == "deserialization_problem" %} Test deserialization problem */
 @Test

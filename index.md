@@ -43,26 +43,21 @@ And finally, let's try serializing it using an [object mapper][OBJECT_MAPPER]:
 {% include_relative lib-jackson/src/test/java/example/Fragments.java fragment="serialize" %}
 ```
 
-We'll see that the output of the <tt>Result</tt> field contains both `success` and `failure` but they look like nested
-JSON objects with a boolean field `empty`:
+We'll see that now we get an `InvalidDefinitionException`:
 
-```json
-{% include_relative lib-jackson/src/test/resources/serialization_error.json %}
+```
+{% include_relative lib-jackson/src/test/resources/serialization_error.txt %}
 ```
 
-> You may also see a `present` field along with `empty`, depending on the JDK version you are using.
-
-Although this may look strange, it's actually what we should expect. In this case, `getSuccess()` and `getFailure()` are
-public getters on the <tt>Result</tt> class, and both of them return an optional value. Now <tt>Optional</tt> class has
-a public getter `isPresent()`, which means that, unless you have registered the
-[Jackson modules that deal with JDK 8 datatypes][JACKSON_JAVA8_REPO], it will be serialized with a value of `true` or
-`false`, depending on whether it is empty or not. This is Jackson's default serialization behavior.
+Although this may look strange, it's actually what we should expect. In this case, `getSuccess()` is a public getter on
+the <tt>Result</tt> interface that returns an `Optional<Integer>` value, which is not supported by Jackson unless you
+have registered the [modules that deal with JDK 8 datatypes][JACKSON_JAVA8_REPO].
 
 ```java
 {% include_relative lib-jackson/src/test/java/example/Example_Test.java test="serialization_problem" %}
 ```
 
-In fact, what we'd like to be serialized is the actual success value of the `result` field:
+This is Jackson's default serialization behavior. But we'd like to serialize the `result` field like this:
 
 ```json
 {% include_relative lib-jackson/src/test/resources/expected_serialized_result.json %}
@@ -77,7 +72,7 @@ Now, let's reverse our previous example, this time trying to deserialize a JSON 
 {% include_relative lib-jackson/src/test/java/example/Fragments.java fragment="deserialize" %}
 ```
 
-We'll see that now we get an `InvalidDefinitionException`. Let's view the stack trace:
+We'll see that we get another `InvalidDefinitionException`. Let's view the stack trace:
 
 ```
 {% include_relative lib-jackson/src/test/resources/deserialization_error.txt %}

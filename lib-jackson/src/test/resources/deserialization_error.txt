@@ -2,4 +2,3 @@ Cannot construct instance of `com.leakyabstractions.result.api.Result`
  (no Creators, like default constructor, exist):
  abstract types either need to be mapped to concrete types,
  have custom deserializer, or contain additional type information
- at [Source: (String)"{"version":"v2","result":{"success":512}}"; line: 1, column: 26]
