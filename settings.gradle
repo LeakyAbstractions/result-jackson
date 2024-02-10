@@ -1,3 +1,4 @@
 
 rootProject.name = 'result-jackson-root'
 include('result-jackson')
+include('api-compatibility')
