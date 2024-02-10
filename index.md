@@ -17,7 +17,7 @@ When using [<tt>Result</tt> objects][RESULT_REPO] with [Jackson][JACKSON_REPO] w
 Let's start by creating a class `ApiResponse` containing one ordinary and one <tt>Result</tt> field:
 
 ```java
-{% include_relative lib-jackson/src/test/java/example/ApiResponse.java %}
+{% include_relative result-jackson/src/test/java/example/ApiResponse.java %}
 ```
 
 
@@ -34,19 +34,19 @@ First, let's make sure we're using the latest versions of both libraries, [Jacks
 Now, let's instantiate an `ApiResponse` object:
 
 ```java
-{% include_relative lib-jackson/src/test/java/example/Fragments.java fragment="instantiate" %}
+{% include_relative result-jackson/src/test/java/example/Fragments.java fragment="instantiate" %}
 ```
 
 And finally, let's try serializing it using an [object mapper][OBJECT_MAPPER]:
 
 ```java
-{% include_relative lib-jackson/src/test/java/example/Fragments.java fragment="serialize" %}
+{% include_relative result-jackson/src/test/java/example/Fragments.java fragment="serialize" %}
 ```
 
 We'll see that now we get an `InvalidDefinitionException`:
 
 ```
-{% include_relative lib-jackson/src/test/resources/serialization_error.txt %}
+{% include_relative result-jackson/src/test/resources/serialization_error.txt %}
 ```
 
 Although this may look strange, it's actually what we should expect. In this case, `getSuccess()` is a public getter on
@@ -54,13 +54,13 @@ the <tt>Result</tt> interface that returns an `Optional<Integer>` value, which i
 have registered the [modules that deal with JDK 8 datatypes][JACKSON_JAVA8_REPO].
 
 ```java
-{% include_relative lib-jackson/src/test/java/example/Example_Test.java test="serialization_problem" %}
+{% include_relative result-jackson/src/test/java/example/Example_Test.java test="serialization_problem" %}
 ```
 
 This is Jackson's default serialization behavior. But we'd like to serialize the `result` field like this:
 
 ```json
-{% include_relative lib-jackson/src/test/resources/expected_serialized_result.json %}
+{% include_relative result-jackson/src/test/resources/expected_serialized_result.json %}
 ```
 
 
@@ -69,20 +69,20 @@ This is Jackson's default serialization behavior. But we'd like to serialize the
 Now, let's reverse our previous example, this time trying to deserialize a JSON object into an <tt>ApiResponse</tt>:
 
 ```java
-{% include_relative lib-jackson/src/test/java/example/Fragments.java fragment="deserialize" %}
+{% include_relative result-jackson/src/test/java/example/Fragments.java fragment="deserialize" %}
 ```
 
 We'll see that we get another `InvalidDefinitionException`. Let's view the stack trace:
 
 ```
-{% include_relative lib-jackson/src/test/resources/deserialization_error.txt %}
+{% include_relative result-jackson/src/test/resources/deserialization_error.txt %}
 ```
 
 This behavior again makes sense. Essentially, Jackson doesn't have a clue how to create new <tt>Result</tt> objects,
 because <tt>Result</tt> is just an interface, not a concrete type.
 
 ```java
-{% include_relative lib-jackson/src/test/java/example/Example_Test.java test="deserialization_problem" %}
+{% include_relative result-jackson/src/test/java/example/Example_Test.java test="deserialization_problem" %}
 ```
 
 
@@ -101,13 +101,13 @@ First, let's add the latest version as a Maven dependency:
 All we need to do now is register <tt>ResultModule</tt> with our object mapper:
 
 ```java
-{% include_relative lib-jackson/src/test/java/example/Fragments.java fragment="register_manually" %}
+{% include_relative result-jackson/src/test/java/example/Fragments.java fragment="register_manually" %}
 ```
 
 Alternatively, you can also auto-discover the module with:
 
 ```java
-{% include_relative lib-jackson/src/test/java/example/Fragments.java fragment="register_automatically" %}
+{% include_relative result-jackson/src/test/java/example/Fragments.java fragment="register_automatically" %}
 ```
 
 Regardless of registration mechanism, after registration all functionality is available for all normal Jackson
@@ -119,26 +119,26 @@ operations.
 Now, let's try and serialize our `ApiResponse` object again:
 
 ```java
-{% include_relative lib-jackson/src/test/java/example/Example_Test.java test="serialization_solution_successful_result" %}
+{% include_relative result-jackson/src/test/java/example/Example_Test.java test="serialization_solution_successful_result" %}
 ```
 
 If we look at the serialized response, we'll see that this time the `result` field contains a null `failure` value and
 a non-null `success` value:
 
 ```json
-{% include_relative lib-jackson/src/test/resources/serialization_solution_successful_result.json %}
+{% include_relative result-jackson/src/test/resources/serialization_solution_successful_result.json %}
 ```
 
 Next, we can try serializing a failed result:
 
 ```java
-{% include_relative lib-jackson/src/test/java/example/Example_Test.java test="serialization_solution_failed_result" %}
+{% include_relative result-jackson/src/test/java/example/Example_Test.java test="serialization_solution_failed_result" %}
 ```
 
 And we can verify that the serialized response contains a non-null `failure` value and a null `success` value:
 
 ```json
-{% include_relative lib-jackson/src/test/resources/serialization_solution_failed_result.json %}
+{% include_relative result-jackson/src/test/resources/serialization_solution_failed_result.json %}
 ```
 
 
@@ -148,14 +148,14 @@ Now, let's repeat our tests for deserialization. If we reread our `ApiResponse` 
 `InvalidDefinitionException`:
 
 ```java
-{% include_relative lib-jackson/src/test/java/example/Example_Test.java test="deserialization_solution_successful_result" %}
+{% include_relative result-jackson/src/test/java/example/Example_Test.java test="deserialization_solution_successful_result" %}
 ```
 
 Finally, let's repeat the test again, this time with a failed result. We'll see that yet again we don't get an
 exception, and in fact, have a failed <tt>Result</tt>:
 
 ```java
-{% include_relative lib-jackson/src/test/java/example/Example_Test.java test="deserialization_solution_failed_result" %}
+{% include_relative result-jackson/src/test/java/example/Example_Test.java test="deserialization_solution_failed_result" %}
 ```
 
 
@@ -173,7 +173,7 @@ The implementation of these examples can be found [here][RESULT_JACKSON_EXAMPLE]
 [JACKSON_REPO]:                 https://github.com/FasterXML/jackson
 [OBJECT_MAPPER]:                https://www.baeldung.com/jackson-object-mapper-tutorial
 [RESULT]:                       https://dev.leakyabstractions.com/result/
-[RESULT_JACKSON_EXAMPLE]:       https://github.com/LeakyAbstractions/result-jackson/blob/main/lib-jackson/src/test/java/example/Example_Test.java
+[RESULT_JACKSON_EXAMPLE]:       https://github.com/LeakyAbstractions/result-jackson/blob/main/result-jackson/src/test/java/example/Example_Test.java
 [RESULT_JACKSON_REPO]:          https://github.com/LeakyAbstractions/result-jackson/
 [RESULT_LATEST]:                https://search.maven.org/artifact/com.leakyabstractions/result/
 [RESULT_REPO]:                  https://github.com/LeakyAbstractions/result/
