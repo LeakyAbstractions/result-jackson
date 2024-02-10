@@ -50,7 +50,7 @@ We'll see that now we get an `InvalidDefinitionException`:
 ```
 
 Although this may look strange, it's actually what we should expect. In this case, `getSuccess()` is a public getter on
-the <tt>Result</tt> interface that returns an `Optional<Integer>` value, which is not supported by Jackson unless you
+the <tt>Result</tt> interface that returns an `Optional<String>` value, which is not supported by Jackson unless you
 have registered the [modules that deal with JDK 8 datatypes][JACKSON_JAVA8_REPO].
 
 ```java
@@ -110,8 +110,8 @@ Alternatively, you can also auto-discover the module with:
 {% include_relative result-jackson/src/test/java/example/Fragments.java fragment="register_automatically" %}
 ```
 
-Regardless of registration mechanism, after registration all functionality is available for all normal Jackson
-operations.
+Regardless of the registration mechanism used, once the module is registered all functionality is available for all
+normal Jackson operations.
 
 
 ### Serialization Solution
@@ -144,7 +144,7 @@ And we can verify that the serialized response contains a non-null `failure` val
 
 ### Deserialization Solution
 
-Now, let's repeat our tests for deserialization. If we reread our `ApiResponse` we'll see that we no longer get an
+Now, let's repeat our tests for deserialization. If we read our `ApiResponse` again, we'll see that we no longer get an
 `InvalidDefinitionException`:
 
 ```java
