@@ -1,7 +1,7 @@
 [versions]
 assertj = "3.25.3"
 google-java-format = "1.19.2"
-jackson = "2.16.0"
+jackson = "2.16.1"
 jacoco = "0.8.10"
 japicmp = "0.4.2"
 junit = "5.10.2"
