@@ -1,4 +1,4 @@
-Java 8 optional type `java.util.Optional<java.lang.Integer>`
+Java 8 optional type `java.util.Optional<java.lang.String>`
  not supported by default:
  add Module "com.fasterxml.jackson.datatype:jackson-datatype-jdk8"
  to enable handling

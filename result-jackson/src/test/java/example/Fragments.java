@@ -14,7 +14,7 @@ class Fragments {
 /* {% elsif include.fragment == "instantiate" %} Create new response */
 ApiResponse response = new ApiResponse();
 response.setVersion("v1"); // Set version
-response.setResult(success(1024)); // Set result{% endif %}{% if false %}
+response.setResult(success("Perfect")); // Set result{% endif %}{% if false %}
 
 /* {% elsif include.fragment == "serialize" %} Serialize the response object */
 ObjectMapper objectMapper = new ObjectMapper(); // Create new object mapper
@@ -25,7 +25,7 @@ String json = objectMapper.writeValueAsString(response); // Serialize as JSON{% 
   static void deserialize() throws Exception {
 
 /* {% elsif include.fragment == "deserialize" %} Deserialize a JSON string */
-String json = "{\"version\":\"v2\",\"result\":{\"success\":512}}";
+String json = "{\"version\":\"v2\",\"result\":{\"success\":\"OK\"}}";
 ObjectMapper objectMapper = new ObjectMapper(); // Create new object mapper
 objectMapper.readValue(json, ApiResponse.class); // Deserialize the response{% endif %}{% if false %}
 

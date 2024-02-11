@@ -13,7 +13,7 @@ public class ApiResponse {
   String version;
 
   @JsonProperty
-  Result<Integer, String> result;
+  Result<String, String> result;
 
   // Constructors, getters and setters omitted{% if false %}
   @JsonCreator
@@ -21,7 +21,7 @@ public class ApiResponse {
     /* ... */
   }
 
-  public ApiResponse(String version, Result<Integer, String> result) {
+  public ApiResponse(String version, Result<String, String> result) {
     this.setVersion(version);
     this.setResult(result);
   }
@@ -34,11 +34,11 @@ public class ApiResponse {
     this.version = version;
   }
 
-  public Result<Integer, String> getResult() {
+  public Result<String, String> getResult() {
     return result;
   }
 
-  public void setResult(Result<Integer, String> result) {
+  public void setResult(Result<String, String> result) {
     this.result = result;
   } // {% endif %}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Guillermo Calvo
+ * Copyright 2024 Guillermo Calvo
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,25 +16,21 @@
 
 package com.leakyabstractions.result.jackson;
 
-import java.io.IOException;
-
-import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializationConfig;
+import com.fasterxml.jackson.databind.ser.Serializers;
 import com.leakyabstractions.result.api.Result;
 
-class ResultSerializer extends StdSerializer<Result<?, ?>> {
-
-    private static final long serialVersionUID = 1L;
-
-    ResultSerializer(JavaType type) {
-        super(type);
-    }
+class ResultSerializers extends Serializers.Base {
 
     @Override
-    public void serialize(Result<?, ?> value, JsonGenerator gen, SerializerProvider provider)
-            throws IOException {
-        gen.writeObject(new ResultBuilder<>(value));
+    public JsonSerializer<?> findSerializer(
+            SerializationConfig config, JavaType type, BeanDescription description) {
+        if (Result.class.isAssignableFrom(type.getRawClass())) {
+            return new ResultSerializer(type);
+        }
+        return null;
     }
 }
