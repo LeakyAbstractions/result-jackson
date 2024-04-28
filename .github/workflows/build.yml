@@ -82,13 +82,13 @@ jobs:
     # BUILD
     # ================================
     - name: Build
-      run: ./gradlew build -x check --info --scan
+      run: ./gradlew build -x check --info
 
     # ================================
     # CHECK
     # ================================
     - name: Check
-      run: ./gradlew check --info --scan
+      run: ./gradlew check --info
 
     # ================================
     # COMPATIBILITY REPORT
@@ -105,4 +105,4 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: https://sonarcloud.io
         SONAR_ORGANIZATION: leakyabstractions
-      run: ./gradlew sonarqube --info --scan
+      run: ./gradlew sonarqube --info

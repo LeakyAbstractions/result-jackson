@@ -54,4 +54,4 @@ jobs:
         ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.PUBLISH_PASSWORD }}
         ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
         ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
-      run: ./gradlew publish -Psnapshot --info --scan
+      run: ./gradlew publish -Psnapshot --info
