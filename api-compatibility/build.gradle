@@ -28,6 +28,7 @@ tasks.register("check", me.champeau.gradle.japicmp.JapicmpTask) {
     oldClasspath.from(configurations.previous)
     txtOutputFile               = textReport
     htmlOutputFile              = htmlReport
+    ignoreMissingClasses        = true
     onlyModified                = true
     failOnModification          = false
     failOnSourceIncompatibility = false
