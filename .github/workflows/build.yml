@@ -70,9 +70,9 @@ jobs:
           ${{ runner.os }}-sonar
 
     # ================================
-    # SETUP GRADLE
+    # SET UP GRADLE
     # ================================
-    - name: Setup Gradle
+    - name: Set up Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
         cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/develop' }}
@@ -81,17 +81,13 @@ jobs:
     # BUILD
     # ================================
     - name: Build
-      uses: gradle/actions/setup-gradle@v3
-      with:
-        arguments: build -x check --info --scan
+      run: ./gradlew build -x check --info --scan
 
     # ================================
     # CHECK
     # ================================
     - name: Check
-      uses: gradle/actions/setup-gradle@v3
-      with:
-        arguments: check --info --scan
+      run: ./gradlew check --info --scan
 
     # ================================
     # COMPATIBILITY REPORT
@@ -108,6 +104,4 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: https://sonarcloud.io
         SONAR_ORGANIZATION: leakyabstractions
-      uses: gradle/actions/setup-gradle@v3
-      with:
-        arguments: sonarqube --info --scan
+      run: ./gradlew sonarqube --info --scan
