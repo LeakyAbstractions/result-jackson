@@ -61,6 +61,7 @@ jobs:
     # CACHE SONARCLOUD PACKAGES
     # ================================
     - name: Cache SonarCloud packages
+      if: ${{ matrix.jdk == 21 }}
       uses: actions/cache@v4
       with:
         key: ${{ runner.os }}-sonar
@@ -96,7 +97,7 @@ jobs:
       run: cat ./api-compatibility/build/report.txt >> $GITHUB_STEP_SUMMARY
 
     # ================================
-    # ANALYZE
+    # ANALYZE WITH SONARCLOUD
     # ================================
     - name: Analyze
       if: ${{ matrix.jdk == 21 }}
