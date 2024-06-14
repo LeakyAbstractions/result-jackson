@@ -23,7 +23,7 @@ class Example_Test {
 
 /** {% elsif include.test == "serialization_problem" %} Test serialization problem */
 @Test
-void serialization_problem() throws Exception {
+void serialization_problem() {
   // Given
   ApiResponse response = new ApiResponse("v1", success("Perfect"));
   // Then
