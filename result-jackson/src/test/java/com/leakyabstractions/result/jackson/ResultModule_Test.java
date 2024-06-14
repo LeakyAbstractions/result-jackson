@@ -17,7 +17,10 @@
 package com.leakyabstractions.result.jackson;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-import static com.leakyabstractions.result.assertj.ResultAssertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.LIST;
+import static org.assertj.core.api.InstanceOfAssertFactories.OPTIONAL;
+import static org.assertj.core.api.InstanceOfAssertFactories.optional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -67,7 +70,7 @@ class ResultModule_Test {
         // When
         final Result<String, Integer> result = mapper.readValue(json, RESULT_TYPE);
         // Then
-        assertThat(result).hasSuccess("SUCCESS");
+        assertThat(result).extracting("success", OPTIONAL).contains("SUCCESS");
     }
 
     @Test
@@ -79,7 +82,8 @@ class ResultModule_Test {
         final Result<?, ?> result = mapper.readValue(json, Result.class);
         // Then
         assertThat(result)
-                .hasSuccessSatisfying(
+                .extracting("success", OPTIONAL)
+                .hasValueSatisfying(
                         x -> {
                             assertThat(x).hasFieldOrPropertyWithValue("x", "SUCCESS");
                             assertThat(x).hasFieldOrPropertyWithValue("y", 123);
@@ -94,7 +98,7 @@ class ResultModule_Test {
         // When
         final Result<String, Integer> result = mapper.readValue(json, RESULT_TYPE);
         // Then
-        assertThat(result).hasFailure(404);
+        assertThat(result).extracting("failure", OPTIONAL).contains(404);
     }
 
     @Test
@@ -127,7 +131,7 @@ class ResultModule_Test {
         // When
         final Result<String, Integer> result = mapper.readValue(json, RESULT_TYPE);
         // Then
-        assertThat(result).hasFailure(321);
+        assertThat(result).extracting("failure", OPTIONAL).contains(321);
     }
 
     @Test
@@ -163,9 +167,10 @@ class ResultModule_Test {
         final Result<Foobar<List<Integer>>, ?> result = mapper.readValue(json, RESULT_TYPE);
         // Then
         assertThat(result)
-                .hasSuccessSatisfying(
+                .extracting("success", optional(Foobar.class))
+                .hasValueSatisfying(
                         x -> {
-                            assertThat(x.foo).containsExactly(1, 2, 3);
+                            assertThat(x.foo).asInstanceOf(LIST).containsExactly(1, 2, 3);
                             assertThat(x.bar).isTrue();
                         });
     }
@@ -181,7 +186,8 @@ class ResultModule_Test {
         final Result<Integer, Foobar<Long>> result = mapper.readValue(json, RESULT_TYPE);
         // Then
         assertThat(result)
-                .hasFailureSatisfying(
+                .extracting("failure", optional(Foobar.class))
+                .hasValueSatisfying(
                         x -> {
                             assertThat(x.foo).isEqualTo(404L);
                             assertThat(x.bar).isNull();
@@ -224,6 +230,6 @@ class ResultModule_Test {
         // When
         final Result<Foobar<BigDecimal>, Long> result = mapper.readValue(json, RESULT_TYPE);
         // Then
-        assertThat(result).hasFailure(321L);
+        assertThat(result).extracting("failure", OPTIONAL).contains(321L);
     }
 }
