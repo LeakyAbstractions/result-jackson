@@ -43,9 +43,6 @@ import com.leakyabstractions.result.core.Results;
 @DisplayName("ResultModule")
 class ResultModule_Test {
 
-    static final TypeReference<Result<String, Integer>> RESULT_TYPE = new TypeReference<Result<String, Integer>>() {
-    };
-
     static class Foobar<T> {
 
         @JsonProperty
@@ -67,6 +64,8 @@ class ResultModule_Test {
         // Given
         final ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
         final String json = "{\"success\":\"SUCCESS\"}";
+        final TypeReference<Result<String, Integer>> RESULT_TYPE = new TypeReference<Result<String, Integer>>() {
+        };
         // When
         final Result<String, Integer> result = mapper.readValue(json, RESULT_TYPE);
         // Then
@@ -95,8 +94,10 @@ class ResultModule_Test {
         // Given
         final ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
         final String json = "{\"failure\":404}";
+        final TypeReference<Result<String, Integer>> type = new TypeReference<Result<String, Integer>>() {
+        };
         // When
-        final Result<String, Integer> result = mapper.readValue(json, RESULT_TYPE);
+        final Result<String, Integer> result = mapper.readValue(json, type);
         // Then
         assertThat(result).extracting("failure", OPTIONAL).contains(404);
     }
@@ -117,8 +118,10 @@ class ResultModule_Test {
         // Given
         final ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
         final String json = "{}";
+        final TypeReference<Result<String, Integer>> type = new TypeReference<Result<String, Integer>>() {
+        };
         // When
-        final Result<String, Integer> result = mapper.readValue(json, RESULT_TYPE);
+        final Result<String, Integer> result = mapper.readValue(json, type);
         // Then
         assertThat(result).isNull();
     }
@@ -128,8 +131,10 @@ class ResultModule_Test {
         // Given
         final ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
         final String json = "{\"success\":123,\"failure\":321}";
+        final TypeReference<Result<String, Integer>> type = new TypeReference<Result<String, Integer>>() {
+        };
         // When
-        final Result<String, Integer> result = mapper.readValue(json, RESULT_TYPE);
+        final Result<String, Integer> result = mapper.readValue(json, type);
         // Then
         assertThat(result).extracting("failure", OPTIONAL).contains(321);
     }
@@ -161,10 +166,10 @@ class ResultModule_Test {
         // Given
         final ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
         final String json = "{\"success\":{\"foo\":[1,2,3],\"bar\":true}}";
-        final TypeReference<Result<Foobar<List<Integer>>, ?>> RESULT_TYPE = new TypeReference<Result<Foobar<List<Integer>>, ?>>() {
+        final TypeReference<Result<Foobar<List<Integer>>, ?>> type = new TypeReference<Result<Foobar<List<Integer>>, ?>>() {
         };
         // When
-        final Result<Foobar<List<Integer>>, ?> result = mapper.readValue(json, RESULT_TYPE);
+        final Result<Foobar<List<Integer>>, ?> result = mapper.readValue(json, type);
         // Then
         assertThat(result)
                 .extracting("success", optional(Foobar.class))
@@ -180,10 +185,10 @@ class ResultModule_Test {
         // Given
         final ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
         final String json = "{\"failure\":{\"foo\":404}}";
-        final TypeReference<Result<Integer, Foobar<Long>>> RESULT_TYPE = new TypeReference<Result<Integer, Foobar<Long>>>() {
+        final TypeReference<Result<Integer, Foobar<Long>>> type = new TypeReference<Result<Integer, Foobar<Long>>>() {
         };
         // When
-        final Result<Integer, Foobar<Long>> result = mapper.readValue(json, RESULT_TYPE);
+        final Result<Integer, Foobar<Long>> result = mapper.readValue(json, type);
         // Then
         assertThat(result)
                 .extracting("failure", optional(Foobar.class))
@@ -199,10 +204,10 @@ class ResultModule_Test {
         // Given
         final ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
         final String json = "null";
-        final TypeReference<Result<Foobar<Float>, String>> RESULT_TYPE = new TypeReference<Result<Foobar<Float>, String>>() {
+        final TypeReference<Result<Foobar<Float>, String>> type = new TypeReference<Result<Foobar<Float>, String>>() {
         };
         // When
-        final Result<?, ?> result = mapper.readValue(json, RESULT_TYPE);
+        final Result<?, ?> result = mapper.readValue(json, type);
         // Then
         assertThat(result).isNull();
     }
@@ -212,10 +217,10 @@ class ResultModule_Test {
         // Given
         final ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
         final String json = "{}";
-        final TypeReference<Result<Foobar<String>, BigDecimal>> RESULT_TYPE = new TypeReference<Result<Foobar<String>, BigDecimal>>() {
+        final TypeReference<Result<Foobar<String>, BigDecimal>> type = new TypeReference<Result<Foobar<String>, BigDecimal>>() {
         };
         // When
-        final Result<Foobar<String>, BigDecimal> result = mapper.readValue(json, RESULT_TYPE);
+        final Result<Foobar<String>, BigDecimal> result = mapper.readValue(json, type);
         // Then
         assertThat(result).isNull();
     }
@@ -225,10 +230,10 @@ class ResultModule_Test {
         // Given
         final ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
         final String json = "{\"success\":{\"foo\":\"12.34\",\"bar\":true},\"failure\":321}";
-        final TypeReference<Result<Foobar<BigDecimal>, Long>> RESULT_TYPE = new TypeReference<Result<Foobar<BigDecimal>, Long>>() {
+        final TypeReference<Result<Foobar<BigDecimal>, Long>> type = new TypeReference<Result<Foobar<BigDecimal>, Long>>() {
         };
         // When
-        final Result<Foobar<BigDecimal>, Long> result = mapper.readValue(json, RESULT_TYPE);
+        final Result<Foobar<BigDecimal>, Long> result = mapper.readValue(json, type);
         // Then
         assertThat(result).extracting("failure", OPTIONAL).contains(321L);
     }
