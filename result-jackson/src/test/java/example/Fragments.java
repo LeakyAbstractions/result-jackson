@@ -31,7 +31,7 @@ objectMapper.readValue(json, ApiResponse.class); // Deserialize the response{% e
 
   }
 
-  static void register() throws Exception {
+  static void register() {
 
 /* {% elsif include.fragment == "register_manually" %} Register ResultModule */
 ObjectMapper objectMapper = new ObjectMapper(); // Create new object mapper
