@@ -5,7 +5,6 @@ package example;
 import static com.leakyabstractions.result.core.Results.failure;
 import static com.leakyabstractions.result.core.Results.success;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -24,7 +23,7 @@ class Example_Test {
 
 /** {% elsif include.test == "serialization_problem" %} Test serialization problem */
 @Test
-void serialization_problem() throws Exception {
+void serialization_problem() {
   // Given
   ApiResponse response = new ApiResponse("v1", success("Perfect"));
   // Then

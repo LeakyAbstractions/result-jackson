@@ -3,10 +3,9 @@ assertj = "3.26.0"
 google-java-format = "1.19.2"
 jackson = "2.17.1"
 jacoco = "0.8.10"
-japicmp = "0.4.2"
+japicmp = "0.4.3"
 junit = "5.10.2"
 nexus-publish = "2.0.0"
-result-assertj = "0.9.3.0"
 result-core = "0.15.1.1"
 sonarqube = "5.0.0.4638"
 spotless = "6.25.0"
@@ -16,12 +15,11 @@ assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
-result-assertj = { module = "com.leakyabstractions:result-assertj", version.ref = "result-assertj" }
 result-core = { module = "com.leakyabstractions:result", version.ref = "result-core" }
 
 [bundles]
 implementation = [ "result-core", "jackson-databind" ]
-test-implementation = [ "assertj-core", "junit-jupiter-api", "result-assertj" ]
+test-implementation = [ "assertj-core", "junit-jupiter-api" ]
 test-runtime = [ "junit-jupiter-engine" ]
 
 [plugins]
