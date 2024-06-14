@@ -7,6 +7,7 @@ import static com.leakyabstractions.result.core.Results.success;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.leakyabstractions.result.jackson.ResultModule;
 
+@SuppressWarnings({"unused", "java:S125"})
 class Fragments {
 
   static void serialize() throws Exception {
