@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
 import com.leakyabstractions.result.jackson.ResultModule;
 
+@SuppressWarnings("java:S125")
 @DisplayName("Example")
 class Example_Test {
 
