@@ -23,6 +23,11 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.deser.Deserializers;
 import com.leakyabstractions.result.api.Result;
 
+/**
+ * Finds deserializers for {@link Result} objects.
+ *
+ * @author <a href="https://guillermo.dev/">Guillermo Calvo</a>
+ */
 class ResultDeserializers extends Deserializers.Base {
 
     @Override

@@ -23,6 +23,11 @@ import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.ser.Serializers;
 import com.leakyabstractions.result.api.Result;
 
+/**
+ * Finds serializers for {@link Result} objects.
+ *
+ * @author <a href="https://guillermo.dev/">Guillermo Calvo</a>
+ */
 class ResultSerializers extends Serializers.Base {
 
     @Override
