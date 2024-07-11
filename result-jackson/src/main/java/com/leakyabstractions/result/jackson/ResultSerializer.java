@@ -24,6 +24,11 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.leakyabstractions.result.api.Result;
 
+/**
+ * Serializes {@link Result} objects.
+ *
+ * @author <a href="https://guillermo.dev/">Guillermo Calvo</a>
+ */
 class ResultSerializer extends StdSerializer<Result<?, ?>> {
 
     private static final long serialVersionUID = 1L;

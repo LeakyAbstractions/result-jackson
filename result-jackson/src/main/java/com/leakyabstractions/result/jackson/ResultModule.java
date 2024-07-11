@@ -19,7 +19,11 @@ package com.leakyabstractions.result.jackson;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
-/** Jackson datatype module for {@link com.leakyabstractions.result.api.Result}. */
+/**
+ * Jackson datatype module for {@link com.leakyabstractions.result.api.Result} objects.
+ *
+ * @author <a href="https://guillermo.dev/">Guillermo Calvo</a>
+ */
 public class ResultModule extends SimpleModule {
 
     private static final long serialVersionUID = 1L;

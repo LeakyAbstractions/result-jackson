@@ -27,6 +27,11 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.leakyabstractions.result.api.Result;
 
+/**
+ * Deserializes {@link Result} objects.
+ *
+ * @author <a href="https://guillermo.dev/">Guillermo Calvo</a>
+ */
 class ResultDeserializer extends StdDeserializer<Result<?, ?>> {
 
     private static final long serialVersionUID = 1L;

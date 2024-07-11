@@ -18,12 +18,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
 import com.leakyabstractions.result.jackson.ResultModule;
 
+@SuppressWarnings("java:S125")
 @DisplayName("Example")
 class Example_Test {
 
 /** {% elsif include.test == "serialization_problem" %} Test serialization problem */
 @Test
-void serialization_problem() {
+void testSerializationProblem() {
   // Given
   ApiResponse response = new ApiResponse("v1", success("Perfect"));
   // Then
@@ -35,7 +36,7 @@ void serialization_problem() {
 } // End{% endif %}{% if false %}
 
 @Test
-void serialization_error_message() throws Exception {
+void testExpectedSerializationErrorMessage() throws Exception {
   // Given
   ApiResponse response = new ApiResponse("v1", success("Perfect"));
   String expected;
@@ -52,7 +53,7 @@ void serialization_error_message() throws Exception {
 
 /** {% elsif include.test == "deserialization_problem" %} Test deserialization problem */
 @Test
-void deserialization_problem() {
+void testDeserializationProblem() {
   // Given
   String json = "{\"version\":\"v2\",\"result\":{\"success\":\"OK\"}}";
   // Then
@@ -64,7 +65,7 @@ void deserialization_problem() {
 } // End{% endif %}{% if false %}
 
 @Test
-void deserialization_error_message() throws Exception {
+void testExpectedDeserializationErrorMessage() throws Exception {
   // Given
   String json = "{\"version\":\"v2\",\"result\":{\"success\":\"OK\"}}";
   String expected;
@@ -79,9 +80,9 @@ void deserialization_error_message() throws Exception {
   assertTrue(error.getMessage().replaceAll("\\n", "").startsWith(expected));
 }
 
-/** {% elsif include.test == "serialization_solution_successful_result" %} Test serialization solution with a successful result */
+/** {% elsif include.test == "serialize_successful_result" %} Test serialization solution with a successful result */
 @Test
-void serialization_solution_successful_result() throws Exception {
+void serializeSuccessfulResult() throws Exception {
   // Given
   ApiResponse response = new ApiResponse("v3", success("All good"));
   // When
@@ -93,9 +94,9 @@ void serialization_solution_successful_result() throws Exception {
   assertTrue(json.contains("All good"));
 } // End{% endif %}{% if false %}
 
-/** {% elsif include.test == "serialization_solution_failed_result" %} Test serialization problem with a failed result */
+/** {% elsif include.test == "serialize_failed_result" %} Test serialization problem with a failed result */
 @Test
-void serialization_solution_failed_result() throws Exception {
+void serializeFailedResult() throws Exception {
   // Given
   ApiResponse response = new ApiResponse("v4", failure("Oops"));
   // When
@@ -107,9 +108,9 @@ void serialization_solution_failed_result() throws Exception {
   assertTrue(json.contains("Oops"));
 } // End{% endif %}{% if false %}
 
-/** {% elsif include.test == "deserialization_solution_successful_result" %} Test deserialization solution with a successful result */
+/** {% elsif include.test == "deserialize_successful_result" %} Test deserialization solution with a successful result */
 @Test
-void deserialization_solution_successful_result() throws Exception {
+void deserializeSuccessfulResult() throws Exception {
   // Given
   String json = "{\"version\":\"v5\",\"result\":{\"success\":\"Yay\"}}";
   // When
@@ -120,9 +121,9 @@ void deserialization_solution_successful_result() throws Exception {
   assertEquals("Yay", response.getResult().orElse(null));
 } // End{% endif %}{% if false %}
 
-/** {% elsif include.test == "deserialization_solution_failed_result" %} Test deserialization solution with a failed result */
+/** {% elsif include.test == "deserialize_failed_result" %} Test deserialization solution with a failed result */
 @Test
-void deserialization_solution_failed_result() throws Exception {
+void deserializeFailedResult() throws Exception {
   // Given
   String json = "{\"version\":\"v6\",\"result\":{\"failure\":\"Nay\"}}";
   // When

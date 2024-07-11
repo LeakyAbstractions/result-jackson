@@ -7,6 +7,7 @@ import static com.leakyabstractions.result.core.Results.success;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.leakyabstractions.result.jackson.ResultModule;
 
+@SuppressWarnings({"unused", "java:S125"})
 class Fragments {
 
   static void serialize() throws Exception {
@@ -31,7 +32,7 @@ objectMapper.readValue(json, ApiResponse.class); // Deserialize the response{% e
 
   }
 
-  static void register() throws Exception {
+  static void register() {
 
 /* {% elsif include.fragment == "register_manually" %} Register ResultModule */
 ObjectMapper objectMapper = new ObjectMapper(); // Create new object mapper
