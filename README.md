@@ -3,8 +3,8 @@
 [![Quality Gate Status][BADGE_QUALITY_GATE]][QUALITY_GATE]
 [![Coverage][BADGE_CODE_COVERAGE]][CODE_COVERAGE]
 [![Maven Central][BADGE_ARTIFACTS]][ARTIFACTS]
-[![Latest Release][BADGE_LATEST_RELEASE]][LATEST_RELEASE]
 [![Javadoc][BADGE_JAVADOC]][JAVADOC]
+[![Free ebook][BADGE_GUIDE_BOOK]][GUIDE_BOOK]
 
 # Jackson datatype module for Result
 
@@ -14,6 +14,8 @@ This library provides a [Jackson][JACKSON] datatype module for [Result objects][
 ## Getting Started
 
 Please read the [Quick Guide][QUICK_GUIDE] to know how to add this library to your build.
+
+Also available as an ebook in multiple formats. [Download your free copy now!][GUIDE_BOOK]
 
 
 ## Releases
@@ -87,21 +89,21 @@ See the License for the specific language governing permissions and limitations 
 
 [ARTIFACTS]:                    https://search.maven.org/artifact/com.leakyabstractions/result-jackson/
 [AUTHOR]:                       https://github.com/guillermocalvo/
-[BADGE_ARTIFACTS]:              https://img.shields.io/endpoint?url=https://dev.leakyabstractions.com/result-jackson/badge.json&logo=java&label=maven-central&labelColor=555
+[BADGE_ARTIFACTS]:              https://img.shields.io/maven-central/v/com.leakyabstractions/result-jackson
 [BADGE_BUILD_STATUS]:           https://github.com/leakyabstractions/result-jackson/workflows/Build/badge.svg
 [BADGE_CODE_COVERAGE]:          https://sonarcloud.io/api/project_badges/measure?project=LeakyAbstractions_result-jackson&metric=coverage
-[BADGE_JAVADOC]:                https://img.shields.io/endpoint?url=https://dev.leakyabstractions.com/result-jackson/badge.json&label=javadoc&color=blue
-[BADGE_LATEST_RELEASE]:         https://img.shields.io/github/release/leakyabstractions/result-jackson.svg?logo=github
+[BADGE_GUIDE_BOOK]:             https://img.shields.io/badge/Free_book-444?logo=leanpub
+[BADGE_JAVADOC]:                https://javadoc.io/badge2/com.leakyabstractions/result-jackson/javadoc.svg
 [BADGE_QUALITY_GATE]:           https://sonarcloud.io/api/project_badges/measure?project=LeakyAbstractions_result-jackson&metric=alert_status
 [BUILD_STATUS]:                 https://github.com/LeakyAbstractions/result-jackson/actions?query=workflow%3ABuild
 [CODE_COVERAGE]:                https://sonarcloud.io/component_measures?id=LeakyAbstractions_result-jackson&metric=coverage&view=list
 [CODE_OF_CONDUCT]:              https://github.com/LeakyAbstractions/.github/blob/main/CODE_OF_CONDUCT.md
 [CONTRIBUTING]:                 https://github.com/LeakyAbstractions/.github/blob/main/CONTRIBUTING.md
+[GUIDE_BOOK]:                   https://leanpub.com/result/
 [GUILLERMO]:                    https://guillermo.dev/
 [GUILLERMO_IMAGE]:              https://guillermo.dev/assets/images/thumb.png
 [JACKSON]:                      https://github.com/FasterXML/jackson/
 [JAVADOC]:                      https://javadoc.io/doc/com.leakyabstractions/result-jackson/
-[LATEST_RELEASE]:               https://github.com/leakyabstractions/result-jackson/releases/latest/
 [PRAGVER]:                      https://pragver.github.io/
 [QUALITY_GATE]:                 https://sonarcloud.io/dashboard?id=LeakyAbstractions_result-jackson
 [QUICK_GUIDE]:                  https://dev.leakyabstractions.com/result-jackson/
