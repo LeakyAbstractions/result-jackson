@@ -32,7 +32,7 @@ public class ResultModule extends SimpleModule {
     private static final String GROUP_ID = "com.leakyabstractions";
     private static final String ARTIFACT_ID = "result-jackson";
 
-    private static final int[] VERSION_NUMBERS = { 1, 0, 0, 0 };
+    private static final int[] VERSION_NUMBERS = { 1, 0, 1, 0 };
     private static final String VERSION_SNAPSHOT = null;
 
     private static final int VERSION_GRADE = VERSION_NUMBERS[0];
