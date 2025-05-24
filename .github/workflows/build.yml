@@ -134,3 +134,9 @@ jobs:
         JRELEASER_DEPLOY_MAVEN_NEXUS2_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
         JRELEASER_DEPLOY_MAVEN_NEXUS2_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
       run: ./gradlew publish jreleaserPublish --info
+
+    # ================================
+    # DEBUG
+    # ================================
+    - name: Debug
+      run: cat ./result-jackson/build/jreleaser/trace.log
