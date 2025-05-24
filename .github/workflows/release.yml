@@ -45,6 +45,8 @@ jobs:
     # ================================
     - name: Publish
       env:
+        ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
+        ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
         JRELEASER_DISTRIBUTIONS_ACTIVE: RELEASE
         JRELEASER_DEPLOY_ACTIVE: RELEASE
         JRELEASER_GPG_SECRET_KEY: ${{ secrets.SIGNING_KEY }}

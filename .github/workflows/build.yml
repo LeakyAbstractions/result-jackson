@@ -125,6 +125,8 @@ jobs:
     - name: Publish snapshot version
       if: ${{ env.is_latest_jdk && !env.is_fork }}
       env:
+        ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
+        ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
         JRELEASER_GPG_SECRET_KEY: ${{ secrets.SIGNING_KEY }}
         JRELEASER_GPG_PASSPHRASE: ${{ secrets.SIGNING_PASSWORD }}
         JRELEASER_GITHUB_USERNAME: ${{ secrets.PUBLISH_USERNAME }}
