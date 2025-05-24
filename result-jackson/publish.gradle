@@ -142,7 +142,7 @@ jreleaser {
                     snapshotSupported = true
                     closeRepository = true
                     releaseRepository = true
-                    stagingRepository('build/staging-deploy')
+                    stagingRepository('result-jackson/build/staging-deploy')
                 }
             }
         }
