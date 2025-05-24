@@ -4,6 +4,63 @@ java {
     withSourcesJar()
 }
 
+// Configure publishing repositories and publications
+publishing {
+    publications {
+        mavenRelease(MavenPublication) {
+            pom {
+                groupId         = rootProject.group
+                artifactId      = rootProject.artifactId
+                name            = rootProject.artifactName
+                description     = rootProject.description
+                version         = rootProject.version
+                url             = rootProject.homepage
+                licenses {
+                    license {
+                        name    = rootProject.licenseName
+                        url     = rootProject.licenseUrl
+                    }
+                }
+                developers {
+                    developer {
+                        id      = rootProject.developerId
+                        name    = rootProject.developerName
+                        email   = rootProject.developerEmail
+                    }
+                }
+                organization {
+                    name        = rootProject.organizationName
+                    url         = rootProject.organizationUrl
+                }
+                issueManagement {
+                    system      = rootProject.issuesSystem
+                    url         = rootProject.issuesUrl
+                }
+                ciManagement {
+                    system      = rootProject.ciSystem
+                    url         = rootProject.ciUrl
+                }
+                scm {
+                    url         = rootProject.repository
+                    connection  = rootProject.checkout
+                }
+            }
+            from(components.java)
+        }
+    }
+    repositories {
+        maven {
+            url = layout.buildDirectory.dir('staging-deploy')
+        }
+    }
+}
+
+signing {
+    required = project.hasProperty('signingKey') && project.hasProperty('signingPassword')
+    useInMemoryPgpKeys(project.findProperty('signingKey'), project.findProperty('signingPassword'))
+    sign publishing.publications.mavenRelease
+}
+
 // Configure JReleaser
 jreleaser {
 
@@ -72,38 +129,6 @@ jreleaser {
         active = 'RELEASE'
         verify = false
         mode = 'MEMORY'
-    }
-
-    distributions {
-        library {
-            distributionType = 'JAVA_BINARY'
-            tags = [
-                'java',
-                'library',
-                'jackson',
-                'java-library',
-                'result',
-                'serde-json',
-                'serde-support',
-                'jackson-databind'
-            ]
-            artifact {
-                path = "build/libs/result-jackson-{{projectVersion}}.jar"
-            }
-            artifact {
-                path = "build/libs/result-jackson-{{projectVersion}}-sources.jar"
-                platform.set("java-sources")
-            }
-            artifact {
-                path = "build/libs/result-jackson-{{projectVersion}}-javadoc.jar"
-                platform.set("java-docs")
-            }
-            java {
-                groupId = rootProject.group
-                artifactId = rootProject.artifactId
-                version = '8'
-            }
-        }
     }
 
     deploy {

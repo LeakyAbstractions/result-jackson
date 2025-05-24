@@ -132,4 +132,4 @@ jobs:
         JRELEASER_GITHUB_TOKEN: ${{ secrets.PUBLISH_PASSWORD }}
         JRELEASER_DEPLOY_MAVEN_NEXUS2_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
         JRELEASER_DEPLOY_MAVEN_NEXUS2_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
-      run: ./gradlew jreleaserPublish --info
+      run: ./gradlew publish jreleaserPublish --info

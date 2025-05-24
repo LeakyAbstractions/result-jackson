@@ -5,6 +5,8 @@ plugins {
     id 'com.diffplug.spotless'
     id 'jacoco'
     id 'org.sonarqube'
+    id 'maven-publish'
+    id 'signing'
     id 'org.jreleaser'
 }
 
