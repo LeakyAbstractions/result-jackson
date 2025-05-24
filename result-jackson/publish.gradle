@@ -126,7 +126,7 @@ jreleaser {
     }
 
     signing {
-        active = 'RELEASE'
+        active = 'ALWAYS'
         verify = false
         mode = 'MEMORY'
     }
