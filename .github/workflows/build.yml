@@ -10,6 +10,7 @@ on:
     branches:
     - main
     - develop
+    - jreleaser
 
 jobs:
   build:
@@ -19,7 +20,7 @@ jobs:
 
     strategy:
       matrix:
-        jdk: [ 11, 17, 21, 23 ]
+        jdk: [ 23 ]
 
     env:
       is_latest_jdk:  ${{ matrix.jdk == 23                                          && 'yes' || '' }}
@@ -121,11 +122,14 @@ jobs:
     # ================================
     # PUBLISH SNAPSHOT
     # ================================
-    - name: Publish snapshot version ${{ steps.properties.outputs.version }}
-      if: ${{ env.is_latest_jdk && !env.is_fork && env.is_main && endsWith(steps.properties.outputs.version, '-SNAPSHOT') }}
+    - name: Publish snapshot version
+      if: ${{ env.is_latest_jdk && !env.is_fork }}
       env:
-        ORG_GRADLE_PROJECT_githubUsername: ${{ secrets.PUBLISH_USERNAME }}
-        ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.PUBLISH_PASSWORD }}
-        ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
-        ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
-      run: ./gradlew publish -Psnapshot
+        JRELEASER_DEPLOY_ACTIVE: SNAPSHOT
+        JRELEASER_GPG_SECRET_KEY: ${{ secrets.SIGNING_KEY }}
+        JRELEASER_GPG_PASSPHRASE: ${{ secrets.SIGNING_PASSWORD }}
+        JRELEASER_GITHUB_USERNAME: ${{ secrets.PUBLISH_USERNAME }}
+        JRELEASER_GITHUB_TOKEN: ${{ secrets.PUBLISH_PASSWORD }}
+        JRELEASER_DEPLOY_MAVEN_NEXUS2_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+        JRELEASER_DEPLOY_MAVEN_NEXUS2_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      run: ./gradlew jreleaserPublish --info

@@ -45,17 +45,13 @@ jobs:
     # ================================
     - name: Publish
       env:
-        ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
-        ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
-        ORG_GRADLE_PROJECT_githubUsername: ${{ secrets.PUBLISH_USERNAME }}
-        ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.PUBLISH_PASSWORD }}
-        ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
-        ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
-        ORG_GRADLE_PROJECT_sonatypeStagingProfileId: ${{ secrets.SONATYPE_STAGING_PROFILE_ID }}
-      run: ./gradlew publish -Prelease --info
-
-    # ================================
-    # CREATE RELEASE
-    # ================================
-    - name: Create Release
-      uses: softprops/action-gh-release@v2
+        JRELEASER_DISTRIBUTIONS_ACTIVE: RELEASE
+        JRELEASER_DEPLOY_ACTIVE: RELEASE
+        JRELEASER_GPG_SECRET_KEY: ${{ secrets.SIGNING_KEY }}
+        JRELEASER_GPG_PASSPHRASE: ${{ secrets.SIGNING_PASSWORD }}
+        JRELEASER_GITHUB_USERNAME: ${{ secrets.PUBLISH_USERNAME }}
+        JRELEASER_GITHUB_TOKEN: ${{ secrets.PUBLISH_PASSWORD }}
+        JRELEASER_DEPLOY_MAVEN_NEXUS2_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+        JRELEASER_DEPLOY_MAVEN_NEXUS2_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+        JRELEASER_NEXUS2_STAGING_PROFILE_ID: ${{ secrets.SONATYPE_STAGING_PROFILE_ID }}
+      run: ./gradlew jreleaserFullRelease --info
