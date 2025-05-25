@@ -6,18 +6,6 @@ java {
 
 // Configure publishing repositories and publications
 publishing {
-    repositories {
-        if (project.hasProperty('githubUsername') && project.hasProperty('githubPassword')) {
-            maven {
-                name = 'GitHubPackages'
-                url = uri('https://maven.pkg.github.com/LeakyAbstractions/result')
-                credentials {
-                    username = project.githubUsername
-                    password = project.githubPassword
-                }
-            }
-        }
-    }
     publications {
         mavenRelease(MavenPublication) {
             pom {

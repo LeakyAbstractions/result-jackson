@@ -28,6 +28,7 @@ tasks.register("check", me.champeau.gradle.japicmp.JapicmpTask) {
     final mdReport    = layout.buildDirectory.file('report.md').get().asFile
     addNewArchives(configurations.current)
     addOldArchives(configurations.previous)
+    packageExcludes             = [ 'com.fasterxml.jackson.core.internal.*' ]
     semverOutputFile            = semverReport
     txtOutputFile               = textReport
     htmlOutputFile              = htmlReport
