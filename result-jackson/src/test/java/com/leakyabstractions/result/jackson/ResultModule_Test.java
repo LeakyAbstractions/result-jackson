@@ -142,7 +142,7 @@ class ResultModule_Test {
     @Test
     void write_successful_result() throws JsonProcessingException {
         // Given
-        final ObjectMapper mapper = new ObjectMapper().findAndRegisterModules().setSerializationInclusion(NON_NULL);
+        final ObjectMapper mapper = new ObjectMapper().findAndRegisterModules().setDefaultPropertyInclusion(NON_NULL);
         final Result<?, ?> result = Results.success("OK");
         // When
         final String json = mapper.writeValueAsString(result);
@@ -153,7 +153,7 @@ class ResultModule_Test {
     @Test
     void write_failed_result() throws JsonProcessingException {
         // Given
-        final ObjectMapper mapper = new ObjectMapper().findAndRegisterModules().setSerializationInclusion(NON_NULL);
+        final ObjectMapper mapper = new ObjectMapper().findAndRegisterModules().setDefaultPropertyInclusion(NON_NULL);
         final Result<?, ?> result = Results.failure("FAILURE");
         // When
         final String json = mapper.writeValueAsString(result);

@@ -7,6 +7,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Pragmatic Versioning](https://pragver.github.io/spec/1.0.0.0.html).
 
 
+## [Unreleased]
+
+### Changed
+
+- Bump **jackson-databind** from 2.19.1 to 2.20.0.
+
+
 ## [1.0.2.2]
 
 ### Changed
@@ -62,6 +69,7 @@ Namespace migrated to Central Portal.
 - Class `com.leakyabstractions.result.jackson.ResultModule`.
 
 
+[Unreleased]: https://github.com/LeakyAbstractions/result-jackson/compare/main...develop
 [1.0.0.0]: https://github.com/LeakyAbstractions/result-jackson/releases/tag/1.0.0.0
 [1.0.1.0]: https://github.com/LeakyAbstractions/result-jackson/releases/tag/1.0.1.0
 [1.0.1.1]: https://github.com/LeakyAbstractions/result-jackson/releases/tag/1.0.1.1
