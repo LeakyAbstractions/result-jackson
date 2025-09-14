@@ -11,7 +11,7 @@ and this project adheres to [Pragmatic Versioning](https://pragver.github.io/spe
 
 ### Changed
 
-- Bump **jackson-databind** from 2.19.1 to 2.19.2.
+- Bump **jackson-databind** from 2.19.1 to 2.20.0.
 
 
 ## [1.0.2.2]
