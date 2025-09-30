@@ -12,6 +12,7 @@ spotless = "8.0.0"
 
 [libraries]
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
+google-java-format = { module = "com.google.googlejavaformat:google-java-format", version.ref = "google-java-format" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
@@ -20,7 +21,7 @@ result-core = { module = "com.leakyabstractions:result", version.ref = "result-c
 [bundles]
 implementation = [ "result-core", "jackson-databind" ]
 test-implementation = [ "assertj-core", "junit-jupiter-api" ]
-test-runtime = [ "junit-jupiter-engine" ]
+test-runtime = [ "junit-jupiter-engine", "google-java-format" ]
 
 [plugins]
 japicmp = { id = "me.champeau.gradle.japicmp", version.ref = "japicmp" }
