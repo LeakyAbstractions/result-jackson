@@ -9,7 +9,9 @@ and this project adheres to [Pragmatic Versioning](https://pragver.github.io/spe
 
 ## [Unreleased]
 
-No unreleased changes.
+### Changed
+
+- Class `com.leakyabstractions.result.jackson.ResultBuilder` has been made `final`.
 
 
 ## [1.0.3.0]
