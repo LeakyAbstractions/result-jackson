@@ -12,6 +12,7 @@ and this project adheres to [Pragmatic Versioning](https://pragver.github.io/spe
 ### Changed
 
 - Class `com.leakyabstractions.result.jackson.ResultBuilder` has been made `final`.
+- Bump **jackson-databind** from 2.20.0 to 2.20.1.
 
 
 ## [1.0.3.0]
