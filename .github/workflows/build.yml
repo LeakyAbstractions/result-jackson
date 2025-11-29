@@ -19,10 +19,10 @@ jobs:
 
     strategy:
       matrix:
-        jdk: [ 17, 21, 24 ]
+        jdk: [ 21, 25 ]
 
     env:
-      is_latest_jdk:  ${{ matrix.jdk == 24                                          && 'yes' || '' }}
+      is_latest_jdk:  ${{ matrix.jdk == 25                                          && 'yes' || '' }}
       is_main:        ${{ github.ref_name == github.event.repository.default_branch && 'yes' || '' }}
       is_develop:     ${{ github.ref_name == 'develop'                              && 'yes' || '' }}
       is_fork:        ${{ github.event_name == 'pull_request'                       && 'yes' || '' }}
@@ -34,14 +34,14 @@ jobs:
     # ================================
     - name: Shallow clone
       if: ${{ !env.is_latest_jdk || env.is_fork }}
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
 
     # ================================
     # CHECKOUT
     # ================================
     - name: Checkout git branch
       if: ${{ env.is_latest_jdk && !env.is_fork }}
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         # Fetch all history for all tags and branches (recommended by SonarQube)
         fetch-depth: 0
@@ -51,7 +51,7 @@ jobs:
     # ================================
     - name: Validate Gradle Wrapper files
       if: ${{ env.is_latest_jdk }}
-      uses: gradle/actions/wrapper-validation@v4
+      uses: gradle/actions/wrapper-validation@v5
 
     # ================================
     # SET UP JDK
@@ -67,7 +67,7 @@ jobs:
     # SET UP GRADLE
     # ================================
     - name: Set up Gradle
-      uses: gradle/actions/setup-gradle@v4
+      uses: gradle/actions/setup-gradle@v5
       with:
         build-scan-publish: true
         build-scan-terms-of-use-url: "https://gradle.com/help/legal-terms-of-use"

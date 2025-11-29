@@ -29,7 +29,7 @@ import com.leakyabstractions.result.core.Results;
  * @param <S> the type of the success value
  * @param <F> the type of the failure value
  */
-public class ResultBuilder<S, F> {
+final class ResultBuilder<S, F> {
 
     @JsonProperty
     private S success;

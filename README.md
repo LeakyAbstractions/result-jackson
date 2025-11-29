@@ -6,9 +6,9 @@
 [![Javadoc][BADGE_JAVADOC]][JAVADOC]
 [![Free ebook][BADGE_GUIDE_BOOK]][GUIDE_BOOK]
 
-# Jackson datatype module for Result
+# Jackson 2.x Datatype Module for Result
 
-This library provides a [Jackson][JACKSON] datatype module for [Result objects][RESULT].
+This library provides a [Jackson 2.x][JACKSON] datatype module for [Result objects][RESULT].
 
 
 ## Getting Started

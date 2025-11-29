@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.leakyabstractions.result.api.Result;
 
 /** {% endif %} */
-public class ApiResponse {
+public final class ApiResponse {
 
   @JsonProperty
   String version;

@@ -18,7 +18,7 @@ jobs:
     # CHECKOUT
     # ================================
     - name: Checkout git tag
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
 
     # ================================
     # SET UP JDK
@@ -28,13 +28,13 @@ jobs:
       with:
         distribution: 'zulu'
         java-package: jdk
-        java-version: 21
+        java-version: 25
 
     # ================================
     # SET UP GRADLE
     # ================================
     - name: Set up Gradle
-      uses: gradle/actions/setup-gradle@v4
+      uses: gradle/actions/setup-gradle@v5
       with:
         build-scan-publish: true
         build-scan-terms-of-use-url: "https://gradle.com/help/legal-terms-of-use"

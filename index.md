@@ -1,14 +1,14 @@
 ---
-title: Jackson Datatype Module for Result
+title: Jackson 2.x Datatype Module for Result
 description: Result-Jackson provides a Jackson datatype module for Result objects
 image: https://dev.leakyabstractions.com/result/result-banner.png
 ---
 
-# Result Jackson Module
+# Result Jackson 2.x Module
 
 When using [Result objects][RESULT_REPO] with [Jackson][JACKSON_REPO] we might run into some problems. The
-[Jackson datatype module for Result][RESULT_JACKSON_REPO] solves them by making Jackson treat results as if they were
-ordinary objects.
+[Jackson 2.x datatype module for Result][RESULT_JACKSON_REPO] solves them by making Jackson treat results as if they
+were ordinary objects.
 
 > [Jackson][JACKSON_REPO] is a Java library for [JSON] parsing and generation. It is widely used for converting Java
 > objects to JSON and vice versa, making it essential for handling data in web services and RESTful APIs.
@@ -102,7 +102,7 @@ What we want, is for Jackson to treat `Result` values as JSON objects that conta
 value. Fortunately, there's a Jackson module that can solve this problem.
 
 
-### Registering the Jackson Datatype Module for Result
+### Registering the Jackson 2.x Datatype Module for Result
 
 Once we have added Result-Jackson as a dependency, all we need to do is register `ResultModule` with our object mapper.
 
@@ -168,8 +168,8 @@ exception, and in fact, have a failed result.
 ## Conclusion
 
 You have learned how to use results with [Jackson][JACKSON_REPO] without any problems by leveraging the
-[Jackson datatype module for Result][RESULT_JACKSON_REPO], demonstrating how it enables Jackson to treat Result objects
-as ordinary fields.
+[Jackson 2.x datatype module for Result][RESULT_JACKSON_REPO], demonstrating how it enables Jackson to treat Result
+objects as ordinary fields.
 
 The full source code for the examples is [available on GitHub][SOURCE_CODE].
 
