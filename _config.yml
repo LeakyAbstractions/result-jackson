@@ -1,7 +1,7 @@
 theme: jekyll-theme-leap-day
 title: Lazy Results
 description: Jackson 2.x datatype module for Result
-current_version: 1.0.3.0
+current_version: 1.1.0.0
 show_downloads: true
 logo: https://dev.leakyabstractions.com/result/result-banner.png
 exclude:
