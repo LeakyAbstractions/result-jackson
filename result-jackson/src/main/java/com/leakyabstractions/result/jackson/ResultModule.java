@@ -20,7 +20,7 @@ import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 /**
- * Jackson datatype module for {@link com.leakyabstractions.result.api.Result Result} objects.
+ * Jackson 2.x datatype module for {@link com.leakyabstractions.result.api.Result Result} objects.
  *
  * @author <a href="https://guillermo.dev/">Guillermo Calvo</a>
  * @see com.leakyabstractions.result.jackson Jackson datatype module for Result
