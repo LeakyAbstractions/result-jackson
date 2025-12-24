@@ -1,6 +1,6 @@
 ---
 title: Jackson 2.x Datatype Module for Result
-description: Result-Jackson provides a Jackson datatype module for Result objects
+description: Result-Jackson provides a Jackson 2.x datatype module for Result objects
 image: https://dev.leakyabstractions.com/result/result-banner.png
 ---
 
