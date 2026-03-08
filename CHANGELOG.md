@@ -12,7 +12,7 @@ and this project adheres to [Pragmatic Versioning](https://pragver.github.io/spe
 ### Changed
 
 - Bump **result-core** from 1.0.0.0 to 1.0.2.0.
-- Bump **jackson-databind** from 2.20.1 to 2.21.0.
+- Bump **jackson-databind** from 2.20.1 to 2.21.1.
 
 
 ## [1.1.0.0]
