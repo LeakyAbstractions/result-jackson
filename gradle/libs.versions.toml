@@ -19,8 +19,9 @@ junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", vers
 result-core = { module = "com.leakyabstractions:result", version.ref = "result-core" }
 
 [bundles]
-implementation = [ "result-core", "jackson-databind" ]
-test-implementation = [ "assertj-core", "junit-jupiter-api" ]
+compile-only = [ "jackson-databind" ]
+implementation = [ "result-core" ]
+test-implementation = [ "assertj-core", "junit-jupiter-api", "jackson-databind" ]
 test-runtime = [ "junit-jupiter-engine", "google-java-format" ]
 
 [plugins]

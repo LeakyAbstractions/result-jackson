@@ -22,5 +22,6 @@ apply from: project.file('javadoc.gradle')
 apply from: project.file('publish.gradle')
 
 dependencies {
+    compileOnly libs.bundles.compile.only
     implementation libs.bundles.implementation
 }
