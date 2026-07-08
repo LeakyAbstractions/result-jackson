@@ -5,6 +5,6 @@ javadoc {
         header "${project.artifactName} ${rootProject.version}"
         author true
         links 'https://javadoc.io/doc/com.leakyabstractions/result-api/latest/'
-        links 'https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/' + libs.versions.jackson.get()
+        links 'https://javadocs.dev/com.fasterxml.jackson.core/jackson-databind/' + libs.versions.jackson.get()
     }
 }
