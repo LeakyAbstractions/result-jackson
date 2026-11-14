@@ -82,11 +82,10 @@ class ResultModule_Test {
         // Then
         assertThat(result)
                 .extracting("success", OPTIONAL)
-                .hasValueSatisfying(
-                        x -> {
-                            assertThat(x).hasFieldOrPropertyWithValue("x", "SUCCESS");
-                            assertThat(x).hasFieldOrPropertyWithValue("y", 123);
-                        });
+                .hasValueSatisfying(x -> {
+                    assertThat(x).hasFieldOrPropertyWithValue("x", "SUCCESS");
+                    assertThat(x).hasFieldOrPropertyWithValue("y", 123);
+                });
     }
 
     @Test
@@ -173,11 +172,10 @@ class ResultModule_Test {
         // Then
         assertThat(result)
                 .extracting("success", optional(Foobar.class))
-                .hasValueSatisfying(
-                        x -> {
-                            assertThat(x.foo).asInstanceOf(LIST).containsExactly(1, 2, 3);
-                            assertThat(x.bar).isTrue();
-                        });
+                .hasValueSatisfying(x -> {
+                    assertThat(x.foo).asInstanceOf(LIST).containsExactly(1, 2, 3);
+                    assertThat(x.bar).isTrue();
+                });
     }
 
     @Test
@@ -192,11 +190,10 @@ class ResultModule_Test {
         // Then
         assertThat(result)
                 .extracting("failure", optional(Foobar.class))
-                .hasValueSatisfying(
-                        x -> {
-                            assertThat(x.foo).isEqualTo(404L);
-                            assertThat(x.bar).isNull();
-                        });
+                .hasValueSatisfying(x -> {
+                    assertThat(x.foo).isEqualTo(404L);
+                    assertThat(x.bar).isNull();
+                });
     }
 
     @Test
